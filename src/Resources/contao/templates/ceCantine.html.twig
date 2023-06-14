@@ -1,0 +1,56 @@
+{% set i = 0 %}
+<h2>Présence à la cantine</h2>
+<div id="filtres">
+    <form action="" method="post">
+        <select class="nomClasse" name="nomClasse" id="nomClasse" required>
+            <option value="">Choix de la classe</option>
+                {% for c in classe %}
+                    <option value="{{c.id}}">{{c.nom}}</option>
+                {% endfor %}
+        </select>
+        <select class="nomEtablissement" name="nomEtablissement" id="nomEtablissement" required>
+            <option value="">Choix de l'établissement</option>
+                {% for eta in etablissement %}
+                    <option value="{{eta.id}}">{{eta.nom}}</option>
+                {% endfor %}
+        </select>
+    </form>
+</div>
+
+
+    <div id="formListing">
+        <form action=""  method="post">
+                <div class="selection">
+                    <label>
+                        <p>Veuillez saisir la date du jour :</p>
+                        <input type="date" name="date" id="date" required>
+                    </label>
+                </div>
+
+
+            <table class="presence">
+                <thead>
+                    <tr>
+                        <th>Enfant</th>
+                        <th>Présence petit déjeuner ?</th>
+                        <th>Présence au déjeuner ?</th>
+                        <th>Présence au goûter ?</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for e in enfant %}
+                        <tr class="listing classe_{{e.classe}} etablissement_{{e.etablissement}}">
+                            <td>{{e.nom}} {{e.prenom}}</td>
+                            <td><input type="checkbox" name="petitDej[]" value="{{e.id}}"></td>
+                            <td><input type="checkbox" name="dejeuner[]" value="{{e.id}}"></td>
+                            <td><input type="checkbox" name="gouter[]" value="{{e.id}}"></td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+
+            <input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
+            <input type="hidden" name="FORM_SUBMIT" value="listing">
+            <div id="submit" class="bt1"><input type="submit" class="btn" value="Envoyer"></div>
+        </form>
+    </div>

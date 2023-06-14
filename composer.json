@@ -1,0 +1,33 @@
+{
+    "name": "tabularasadev/contao-cantine",
+    "description": "Module de cantine",
+    "type": "contao-bundle",
+    "authors": [
+        {
+            "name": "Jimmy",
+            "email": "jimmy@tabularasa.fr"
+        }
+    ],
+    "require": {
+        "contao/core-bundle": "^4.10 | ^4.12",
+        "twig/twig": "^3.3"
+    },
+    "license": "Not free",
+    "autoload": {
+        "psr-4": {
+            "trdev\\ContaoCantineBundle\\": "src/"
+        },
+        "classmap": [
+            "src/Resources/contao/"
+        ],
+        "exclude-from-classmap": [
+            "src/Resources/contao/config/",
+            "src/Resources/contao/dca/",
+            "src/Resources/contao/languages/",
+            "src/Resources/contao/templates/"
+        ]
+    },
+    "extra": {
+        "contao-manager-plugin": "trdev\\ContaoCantineBundle\\ContaoManager\\Plugin"
+    }
+}

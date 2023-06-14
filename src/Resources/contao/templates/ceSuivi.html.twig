@@ -1,0 +1,49 @@
+<h1>Tableau de bord</h1>
+
+<form action=""  method="post">
+    <div class="debutFin">
+        <label>
+            <label for="dateDebut">Date de début :</label>
+            <input type="date" name="dateDebut" id="dateDebut" required>
+        </label>
+        <label>
+            <label for="dateFin">Date de fin :</label>
+            <input type="date" name="dateFin" id="dateFin" required>
+        </label>
+    </div>
+
+    <table>
+        <thead>
+            <tr>
+                <th>Nom-Prénom enfant</th>
+                <th>Nombre de repas</th>
+                <th>Facture</th>
+                <th>Date de facture</th>
+                <th>Paiement de la facture</th>
+                <th>Montant</th>
+                <th>Type de paiement</th>
+                <th>Statue</th>
+                <th>Date de paiement</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in enfants %}
+                <tr>
+                    <td>{{e.nom}} {{e.prenom}}</td>
+                    <td>{{e.countRepas(dateDebut, dateFin)}}</td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                    <td></td>
+                </tr>
+            {% endfor %}
+
+        </tbody>
+        <input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
+        <input type="hidden" name="FORM_SUBMIT" value="listing">
+        <div id="submit"><input type="submit" value="Envoyer"></div>
+    </table>
+</form>
