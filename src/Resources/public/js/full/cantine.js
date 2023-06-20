@@ -27,7 +27,7 @@ jQuery("document").ready(function ($) {
                 } else {
                     $("#presences tbody tr").hide();
                     if (json.data.length == 0) {
-                        alert("Aucun enfant");
+                        alert("Aucun enfant trouvé");
                     }
                     json.data.forEach((element) => {
                         let row = "#enfant_" + element.enfant,
