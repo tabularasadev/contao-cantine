@@ -15,14 +15,21 @@
  */
 //use trdev\ContaoCantineBundle
 
-use trdev\ContaoCantineBundle\Element\ceCantine;
+use trdev\ContaoCantineBundle\Classes\AjaxAPE;
 use trdev\ContaoCantineBundle\Element\ceSuivi;
+use trdev\ContaoCantineBundle\Module\beModuleSaisie;
 
 $GLOBALS['assetsFolder']['ContaoCantineBundle']    = "/bundles/contaocantine/";
 $GLOBALS['bundleNamespace']['ContaoCantineBundle'] = "trdev\\ContaoCantineBundle\\";
 
+$GLOBALS['TL_HOOKS']['outputFrontendTemplate'][] = array(AjaxAPE::class, 'pageLoad');
+
 // #region STYLES
 $GLOBALS['TL_CSS'][] = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200';
+
+if (TL_MODE == 'BE') {
+    $GLOBALS['TL_CSS'][] = $GLOBALS['assetsFolder']['ContaoCantineBundle'] . "css/be.css";
+}
 // #endregion
 
 // #region JAVASCRIPTS
@@ -32,8 +39,7 @@ $GLOBALS['TL_JAVASCRIPT'][] = ($_ENV['APP_ENV'] == "dev") ? $GLOBALS['assetsFold
 
 // #region ELEMENTS
 array_insert($GLOBALS['TL_CTE']['Cantine'], 1, array(
-    'ceCantine' => ceCantine::class,
-    'ceSuivi'   => ceSuivi::class,
+    'ceSuivi' => ceSuivi::class,
 ));
 // #endregion
 
@@ -41,29 +47,26 @@ array_insert($GLOBALS['TL_CTE']['Cantine'], 1, array(
 //$GLOBALS['FE_MOD']['Tabularasa']['ModuleSuivi'] = ModuleSuivi::class;
 // #endregion
 
-// MODULE BE
-array_insert($GLOBALS['BE_MOD']['moduleSuivi'], 97, array(
-    'suivi' => array(
-        'callback' => 'trdev\moduleSuivi',
-    ),
-));
-
 //Menu BE
-array_insert($GLOBALS['BE_MOD']['Renseignement'], 98, array(
-    'Enfant'        => array(
+array_insert($GLOBALS['BE_MOD']['apeloin'], 98, array(
+    'saisie'         => array(
+        'callback' => beModuleSaisie::class,
+    ),
+    'enfants'        => array(
         'tables' => array('tl_enfant'),
     ),
-    'Etablissement' => array(
+    'etablissements' => array(
         'tables' => array('tl_etablissement'),
     ),
-    'Classe'        => array(
+    'classes'        => array(
         'tables' => array('tl_classe'),
     ),
-    'Repas'         => array(
+    'repas'          => array(
         'tables' => array('tl_repas'),
     ),
-    'Facture'       => array(
-        'tables' => array('tl_facture'),
-    ),
+    /*
+'Facture'       => array(
+'tables' => array('tl_facture'),
+),*/
 
 ));

@@ -106,7 +106,7 @@ $GLOBALS['TL_DCA'][$t] = array(
         'tstamp'    => array(
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ),
-        'date'      => TypeChamp::date(),
+        'date'      => TypeChamp::date(false,true),
         'petitDej'  => TypeChamp::select(array('Non', 'Oui')),
         'dejeuner'  => TypeChamp::select(array('Non', 'Oui')),
         'gouter'    => TypeChamp::select(array('Non', 'Oui')),

@@ -77,11 +77,12 @@ class TypeChamp extends \Backend
     #endregion
 
     #region Date
-    public static function date($heures = false, $obligatoire = false)
+    public static function date($heures = false, $obligatoire = false, $classe = 'w50')
     {
+        $rgxp = ($heures === true) ? 'datim' : 'date';
         $item = array(
             'inputType' => 'text',
-            'eval'      => array('rgxp' => ($heures === true) ? 'date' : 'datim', 'datepicker' => true, 'tl_class' => 'clr wizard', 'mandatory' => $obligatoire),
+            'eval'      => array('rgxp' => $rgxp, 'datepicker' => true, 'tl_class' => $classe, 'mandatory' => $obligatoire),
             'sql'       => "varchar(11) NOT NULL default ''",
         );
 
