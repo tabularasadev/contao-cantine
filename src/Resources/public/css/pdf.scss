@@ -1,7 +1,39 @@
+$noir: #000;
+$blanc: #fff;
+$gris: #ececec;
+
 h1 {
     text-align: center;
 }
 
-p {
-    color: #00ff80;
+#coupons {
+    table {
+        width: 100%;
+        border-collapse: collapse;
+
+        td {
+            text-align: center;
+            border: 1px solid $noir;
+            border-style: dashed;
+            padding: 5px;
+        }
+
+        tr.ecole {
+            font-weight: bold;
+            text-transform: uppercase;
+            background-color: $noir;
+            color: $blanc;
+        }
+
+        tr.classe {
+            background-color: $gris;
+        }
+
+        img {
+            max-width: 100%;
+            width: 2.5cm;
+            object-fit: contain;
+            position: relative;
+        }
+    }
 }

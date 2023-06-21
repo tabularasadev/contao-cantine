@@ -16,8 +16,9 @@
 //use trdev\ContaoCantineBundle
 
 use trdev\ContaoCantineBundle\Classes\AjaxAPE;
-use trdev\ContaoCantineBundle\Element\ceSuivi;
+use trdev\ContaoCantineBundle\Module\beModuleCoupon;
 use trdev\ContaoCantineBundle\Module\beModuleSaisie;
+use trdev\ContaoCantineBundle\Module\beModuleTableauBord;
 
 $GLOBALS['assetsFolder']['ContaoCantineBundle']    = "/bundles/contaocantine/";
 $GLOBALS['bundleNamespace']['ContaoCantineBundle'] = "trdev\\ContaoCantineBundle\\";
@@ -28,6 +29,9 @@ $GLOBALS['TL_HOOKS']['outputFrontendTemplate'][] = array(AjaxAPE::class, 'pageLo
 $GLOBALS['TL_CSS'][] = 'https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200';
 
 if (TL_MODE == 'BE') {
+    $GLOBALS['TL_CSS'][]        = "//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css";
+    $GLOBALS['TL_JAVASCRIPT'][] = "//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js";
+
     $GLOBALS['TL_CSS'][] = $GLOBALS['assetsFolder']['ContaoCantineBundle'] . "css/be.css";
 }
 // #endregion
@@ -38,9 +42,9 @@ $GLOBALS['TL_JAVASCRIPT'][] = ($_ENV['APP_ENV'] == "dev") ? $GLOBALS['assetsFold
 /* #endregion JAVASCRIPTS */
 
 // #region ELEMENTS
-array_insert($GLOBALS['TL_CTE']['Cantine'], 1, array(
-    'ceSuivi' => ceSuivi::class,
-));
+//array_insert($GLOBALS['TL_CTE']['Cantine'], 1, array(
+//    'ceSuivi' => ceSuivi::class,
+//));
 // #endregion
 
 // #region FRONTEND MODULES
@@ -49,19 +53,25 @@ array_insert($GLOBALS['TL_CTE']['Cantine'], 1, array(
 
 //Menu BE
 array_insert($GLOBALS['BE_MOD']['apeloin'], 98, array(
-    'saisie'         => array(
+    'saisie'                 => array(
         'callback' => beModuleSaisie::class,
     ),
-    'enfants'        => array(
+    'tableauBord'            => array(
+        'callback' => beModuleTableauBord::class,
+    ),
+    'enfants'                => array(
         'tables' => array('tl_enfant'),
     ),
-    'etablissements' => array(
+    'etablissements'         => array(
         'tables' => array('tl_etablissement'),
     ),
-    'classes'        => array(
+    'Génération des coupons' => array(
+        'callback' => beModuleCoupon::class,
+    ),
+    'classes'                => array(
         'tables' => array('tl_classe'),
     ),
-    'repas'          => array(
+    'repas'                  => array(
         'tables' => array('tl_repas'),
     ),
     /*

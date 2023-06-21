@@ -89,8 +89,7 @@ $GLOBALS['TL_DCA'][$t] = array(
     // Palettes
     'palettes'    => array(
         '__selector__' => array(''),
-        'default'      => '{Base},date, present, repas, petitDej, dejeuner, gouter;
-                            {Selection}, nomEnfant',
+        'default'      => 'date,nomEnfant, petitDej, dejeuner, gouter',
     ),
 
     // Subpalettes
@@ -106,7 +105,7 @@ $GLOBALS['TL_DCA'][$t] = array(
         'tstamp'    => array(
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ),
-        'date'      => TypeChamp::date(false,true),
+        'date'      => TypeChamp::date(false, true),
         'petitDej'  => TypeChamp::select(array('Non', 'Oui')),
         'dejeuner'  => TypeChamp::select(array('Non', 'Oui')),
         'gouter'    => TypeChamp::select(array('Non', 'Oui')),

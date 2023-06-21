@@ -10,7 +10,9 @@
     ],
     "require": {
         "contao/core-bundle": "^4.10 | ^4.12",
-        "twig/twig": "^3.3"
+        "twig/twig": "^3.3",
+        "dompdf/dompdf": "^2.0",
+        "endroid/qr-code": "^4.6"
     },
     "license": "Not free",
     "autoload": {

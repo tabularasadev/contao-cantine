@@ -1,0 +1,40 @@
+<div id="cantine">
+    <div id="filtres">
+        <form action=""  method="post">
+            <div class="debutFin">
+                <label>
+                    <label for="dateDebut">Date de début :</label>
+                    <input type="date" name="dateDebut" id="dateDebut" required value='{{dateDebut}}'>
+                </label>
+                <label>
+                    <label for="dateFin">Date de fin :</label>
+                    <input type="date" name="dateFin" id="dateFin" required value='{{dateFin}}'>
+                </label>
+            </div>
+
+            <input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
+            <input type="hidden" name="FORM_SUBMIT" value="listing">
+            <div id="submit"><input type="submit" value="Actualiser"></div>
+        </form>
+    </div>
+    <table id="datatable" class="stripe hover">
+        <thead>
+            <tr>
+                <th>Ecole</th>
+                <th>Classe</th>
+                <th>Enfant</th>
+                <th>Nombre de repas</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for e in enfants %}
+                <tr>
+                    <td>{{etablissements[e.etablissement]}}</td>
+                    <td>{{classes[e.classe]}}</td>
+                    <td>{{e.nom}} {{e.prenom}}</td>
+                    <td>{{e.countRepas(dateDebut, dateFin)}}</td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>

@@ -204,6 +204,24 @@ class TypeChamp extends \Backend
     }
     #endregion
 
+    #region Alias
+    public static function alias($table)
+    {
+        $item = array(
+            'inputType'     => 'text',
+            'search'        => true,
+            'sql'           => "varchar(255) NOT NULL default ''",
+            'eval'          => array('rgxp' => 'alias', 'doNotCopy' => true, 'unique' => true, 'maxlength' => 255, 'tl_class' => 'w50'),
+            'save_callback' => array
+            (
+                array($table, 'generateAlias'),
+            ),
+        );
+
+        return $item;
+    }
+    #endregion
+
     #region Traductions = Ajouter les traductions de base, commune a une grande majorité des tables
     public static function traductions($t)
     {

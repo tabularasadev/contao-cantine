@@ -2,6 +2,28 @@ h1 {
   text-align: center;
 }
 
-p {
-  color: #00ff80;
+#coupons table {
+  width: 100%;
+  border-collapse: collapse;
+}
+#coupons table td {
+  text-align: center;
+  border: 1px solid #000;
+  border-style: dashed;
+}
+#coupons table tr.ecole {
+  font-weight: bold;
+  text-transform: uppercase;
+  background-color: #000;
+  color: #fff;
+}
+#coupons table tr.classe {
+  background-color: #ececec;
+}
+#coupons table img {
+  max-width: 100%;
+  width: 2.5cm;
+  -o-object-fit: contain;
+     object-fit: contain;
+  position: relative;
 }

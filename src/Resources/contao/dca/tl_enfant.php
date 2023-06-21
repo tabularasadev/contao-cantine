@@ -8,7 +8,9 @@
  * @copyright Tabula Rasa
  */
 
+use Contao\RequestToken;
 use trdev\ContaoCantineBundle\Classes\TypeChamp;
+use trdev\ContaoCantineBundle\Model\enfantModel;
 
 $t = basename(__FILE__, '.php');
 
@@ -80,19 +82,20 @@ $GLOBALS['TL_DCA'][$t] = array(
 
     // Edit
     'edit'        => array(
-        'buttons_callback' => array(),
+        'buttons_callback' => array
+        (
+            array("$t", 'modButtons'),
+        ),
     ),
 
     // Palettes
     'palettes'    => array(
-        '__selector__' => array(''),
-        'default'      => '{Base},nom,prenom, mail1, mail2;
-                            {Selection}, scolarise, etablissement, classe',
+        '__selector__' => array(),
+        'default'      => 'nom,prenom,scolarise,etablissement,classe;{system:hide},parent1,parent2,alias',
     ),
 
     // Subpalettes
     'subpalettes' => array(
-        '' => 'text',
     ),
 
     // Fields
@@ -103,17 +106,63 @@ $GLOBALS['TL_DCA'][$t] = array(
         'tstamp'        => array(
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ),
-        'nom'           => TypeChamp::text(),
-        'prenom'        => TypeChamp::text(),
+        'nom'           => TypeChamp::text(true),
+        'prenom'        => TypeChamp::text(true),
         'scolarise'     => TypeChamp::select(array('Oui', 'Non')),
-        'mail1'         => TypeChamp::text(),
-        'mail2'         => TypeChamp::text(),
-        'etablissement' => TypeChamp::selectTable('tl_etablissement.nom', false, true),
-        'classe'        => TypeChamp::selectTable('tl_classe.nom', false, true),
+        'etablissement' => TypeChamp::selectTable('tl_etablissement.nom', false, true, true),
+        'classe'        => TypeChamp::selectTable('tl_classe.nom', false, true, true),
+        'parent1'       => TypeChamp::selectTable('tl_member.username', false, true),
+        'parent2'       => TypeChamp::selectTable('tl_member.username', false, true),
+        'alias'         => TypeChamp::alias($t),
     ),
 );
 
 class tl_enfant extends Backend
 {
+    public function generateAlias($varValue, DataContainer $dc)
+    {
+        if ($varValue == '') {
+            $varValue = enfantModel::generateAlias();
+        }
+        return $varValue;
+    }
 
+    public function modButtons($arrButtons, DataContainer $dc)
+    {
+        $rt = new RequestToken();
+        //Boutons à dégager pour faire de la place.
+        //$retraits = array('saveNclose', 'saveNcreate');
+        //foreach ($retraits as $r) {
+        //    unset($arrButtons[$r]);
+        //}
+
+        $bts = array();
+
+        if ($dc->activeRecord->parent1 != '0') {
+            $bts[] = array(
+                'name'  => 'accederAuCompte',
+                'label' => 'Compte Parent 1',
+                'href'  => sprintf('/contao?do=member&act=edit&id=%s&rt=%s', $dc->activeRecord->parent1, $rt->get()),
+            );
+        }
+
+        if ($dc->activeRecord->parent2 != '0') {
+            $bts[] = array(
+                'name'  => 'accederAuCompte',
+                'label' => 'Compte Parent 2',
+                'href'  => sprintf('/contao?do=member&act=edit&id=%s&rt=%s', $dc->activeRecord->parent2, $rt->get()),
+            );
+        }
+
+        if ($dc->activeRecord->nom != '') {
+            foreach ($bts as $b) {
+                $id              = $b['name'];
+                $txt             = $b['label'];
+                $href            = ($b['href']) ? $b['href'] : '#';
+                $arrButtons[$id] = sprintf('<a href="%s" id="%s" class="tl_submit" data-id="%s" data-rt="%s">%s</a>', $href, $id, $dc->activeRecord->id, $rt->get(), $txt);
+            }
+        }
+
+        return $arrButtons;
+    }
 }

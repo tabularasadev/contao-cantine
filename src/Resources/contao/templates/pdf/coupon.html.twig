@@ -1,0 +1,40 @@
+{% set max = 3 %}
+<!DOCTYPE html>
+<html lang="fr">
+    <head>
+        <meta charset="UTF-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>{{h1}}</title>
+        <style>{{css}}</style>
+    </head>
+    <body id="coupons">
+        <main>
+            <p>Génération : {{heureGen|date('d/m/Y H:i')}}</p>
+            <table>
+                {% for ecole in ecoles %}
+                    <tr class='ecole'><td colspan="{{max}}">{{ecole.nom}}</td></tr>
+                    {% for classe in ecole.classes %}
+                        <tr class='classe'><td colspan="{{max}}">{{classe.nom}}</td></tr>
+                        {% set i = 0 %}
+                        {% for enfant in classe.enfants %}
+                            {% if i == 0 %}<tr class='enfants'>{% endif %}
+                                <td>
+                                    {{enfant.qrCode|raw}}
+                                    <p>{{enfant.nom}} {{enfant.prenom}}</p>
+                                    <p>Pour accéder à votre facture, scannez le QrCode ci-dessus ou bien rendez vous sur le site</p>
+                                    <p>{{enfant.lien}}</p>
+                                    <p>et saisissez le code suivant :</p>
+                                    <p>{{enfant.alias}}</p>
+                                </td>
+                            {% set i = i+1 %}
+                            {% if i == max %}
+                                {% set i = 0 %}
+                                </tr>
+                            {% endif %}
+                        {% endfor %}
+                        </tr>
+                    {% endfor %}
+                {% endfor %}
+            </table>
+</main></body></html>

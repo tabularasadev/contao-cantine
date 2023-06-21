@@ -43,6 +43,6 @@
   display: inline-block;
   width: 100%;
 }
-#cantine #formListing form #submit {
-  margin-top: 15px;
+#cantine #submit {
+  margin: 15px;
 }

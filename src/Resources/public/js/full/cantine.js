@@ -1,4 +1,5 @@
 jQuery("document").ready(function ($) {
+    //#region Tableau de saisie des repas
     let majListeRepas = function () {
         console.clear();
         console.log("Maj de la liste des Repas");
@@ -50,28 +51,6 @@ jQuery("document").ready(function ($) {
     $("select#nomClasse, select#nomEtablissement, input#date").change(function () {
         majListeRepas();
     });
-    /*
-    $('#nomClasse, #nomEtablissement').change(function(){
-        let filter_class = $(nomClasse).val(),
-            filter_etablissement = $(nomEtablissement).val();
-            $('.listing').hide();
-            if(filter_class == '' && filter_etablissement == ''){
-                $('.listing').show();
-            } else {
-                let afficher = ".listing";
-
-                if(filter_class != "") {
-                    afficher += ".classe_"+filter_class;
-                }
-
-                if(filter_etablissement != ""){
-                    afficher += ".etablissement_"+filter_etablissement;
-                }
-
-                $(afficher).show('slow');
-            }
-        });
-        */
 
     //Afficher la date dans l'input date
     if ($("input#date").length > 0) {
@@ -81,4 +60,16 @@ jQuery("document").ready(function ($) {
 
         inputDate.value = dateString;
     }
+    //#endregion
+
+    //#region Tableau de bord
+    if ($("table#datatable").length > 0) {
+        let dt = new DataTable("#datatable", {
+            lengthMenu: [
+                [10, 25, 50, -1],
+                [10, 25, 50, "All"],
+            ],
+        });
+    }
+    //#endregion
 });
