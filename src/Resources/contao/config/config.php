@@ -53,26 +53,33 @@ $GLOBALS['TL_JAVASCRIPT'][] = ($_ENV['APP_ENV'] == "dev") ? $GLOBALS['assetsFold
 
 //Menu BE
 array_insert($GLOBALS['BE_MOD']['apeloin'], 98, array(
-    'saisie'                 => array(
+    'saisie'      => array(
         'callback' => beModuleSaisie::class,
     ),
-    'tableauBord'            => array(
+    'tableauBord' => array(
         'callback' => beModuleTableauBord::class,
     ),
-    'enfants'                => array(
-        'tables' => array('tl_enfant'),
-    ),
-    'etablissements'         => array(
-        'tables' => array('tl_etablissement'),
-    ),
-    'Génération des coupons' => array(
+    'coupons'     => array(
         'callback' => beModuleCoupon::class,
     ),
-    'classes'                => array(
-        'tables' => array('tl_classe'),
-    ),
-    'repas'                  => array(
+    'repas'       => array(
         'tables' => array('tl_repas'),
+    ),
+    /*
+'Facture'       => array(
+'tables' => array('tl_facture'),
+),*/
+
+));
+array_insert($GLOBALS['BE_MOD']['apeloinConfig'], 98, array(
+    'enfants'        => array(
+        'tables' => array('tl_enfant'),
+    ),
+    'etablissements' => array(
+        'tables' => array('tl_etablissement'),
+    ),
+    'classes'        => array(
+        'tables' => array('tl_classe'),
     ),
     /*
 'Facture'       => array(
