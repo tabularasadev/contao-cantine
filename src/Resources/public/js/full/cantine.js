@@ -92,7 +92,12 @@ jQuery("document").ready(function ($) {
 
         Swal.fire({
             icon: "question",
-            text: "Souhaitez-vous vraiment envoyer les factures listées ci-dessus ?",
+            text: "Quels type de mails souhaitez vous envoyer avec les factures cochées ci-dessus ?",
+            input: "select",
+            inputOptions: {
+                nouveau: "Nouvelle facture",
+                relance: "Relance de facture impayé",
+            },
             confirmButtonText: "Envoyer",
             showCancelButton: true,
             cancelButtonText: "Annuler",
@@ -109,6 +114,7 @@ jQuery("document").ready(function ($) {
                             let datas = {
                                 action: "sendMailFacture",
                                 item: envois[i].value,
+                                typeMail: choix.value,
                             };
                             $.ajax({
                                 url: "/ajax.html",
@@ -181,6 +187,17 @@ jQuery("document").ready(function ($) {
                 });
             }
         });
+    });
+    //#endregion
+
+    //#region Champs date pour la génération de facture
+    $("input[name=dateDebut]").on("change", function () {
+        let debut = moment(this.value),
+            fin = moment(this.value);
+        debut.date(1);
+        fin.endOf("month");
+        this.value = debut.format("YYYY-MM-DD");
+        $("input[name=dateFin]").val(fin.format("YYYY-MM-DD"));
     });
     //#endregion
 });

@@ -3,6 +3,7 @@
 namespace trdev\ContaoCantineBundle\Model;
 
 use Contao\Email;
+use Contao\RequestToken;
 use Contao\System;
 
 class factureModel extends \Model
@@ -258,7 +259,7 @@ class factureModel extends \Model
         return $GLOBALS['typePaiements'][$this->typePaiement];
     }
 
-    public function sendMail()
+    public function sendMail($type = 'nouveau')
     {
         $enfant = enfantModel::findByPk($this->enfant);
         $emails = explode(',', $enfant->emailParents);
@@ -267,10 +268,15 @@ class factureModel extends \Model
             return false;
         }
 
-        $message          = new Email();
-        $message->subject = $GLOBALS['TL_CONFIG']['objetMailFacture'];
+        $message = new Email();
 
-        $html = $GLOBALS['TL_CONFIG']['messageMailFacture'];
+        if ($type == 'nouveau') {
+            $message->subject = $GLOBALS['TL_CONFIG']['objetMailFacture'];
+            $html             = $GLOBALS['TL_CONFIG']['messageMailFacture'];
+        } else {
+            $message->subject = $GLOBALS['TL_CONFIG']['objetMailRelance'];
+            $html             = $GLOBALS['TL_CONFIG']['messageMailRelance'];
+        }
 
         $datas = array(
             'lien' => sprintf("<a href='%s' target='_blank' title='Cliquez-ici pour accéder à votre facture'>Accéder à ma facture</a>", $this->getLienPublique()),
@@ -299,6 +305,27 @@ class factureModel extends \Model
         $this->estPaye      = '1';
         $this->typePaiement = $choix;
         $this->save();
+    }
+
+    public function showButtons()
+    {
+        $rt = new RequestToken();
+
+        $images = array(
+            'more' => $GLOBALS['assetsFolder']['ContaoCantineBundle'] . 'images/more.png',
+            'fact' => $GLOBALS['assetsFolder']['ContaoCantineBundle'] . 'images/facture.png',
+            'euro' => $GLOBALS['assetsFolder']['ContaoCantineBundle'] . 'images/euro.png',
+        );
+        $bts = array(
+            sprintf('<a href="/contao?do=factures&act=edit&id=%s&rt=%s" target="_blank" title="En savoir plus"><img src="%s" /></a>', $this->id, $rt->get(), $images['more']),
+            sprintf('<a href="%s" target="_blank" title="Voir la facture"><img src="%s" /></a>', $this->getLienPublique(), $images['fact']),
+        );
+
+        if ($this->estPaye != '1') {
+            $bts[] = sprintf('<a href="/contao?do=factures&act=edit&id=%s&rt=%s" class="paiement" target="_blank" title="Régler la facture"><img src="%s"/></a>', $this->id, $rt->get(), $images['euro']);
+        }
+
+        return implode($bts);
     }
 }
 

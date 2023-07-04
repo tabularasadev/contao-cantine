@@ -9,12 +9,12 @@
                 </div>
                 <div>
                     <label for="dateFin">Date de fin</label>
-                    <input type="date" name="dateFin" required value='{{dateFin}}'>
+                    <input type="date" name="dateFin" required value='{{dateFin}}' readonly='true'>
                 </div>
             </div>
             <input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
             <input type="hidden" name="FORM_SUBMIT" value="genFacture">
-            <div id="submit" class="bt1"><input type="submit" class="btn" value="Générer"></div>
+            <div id="submit" class="bt1"><input type="submit" class="btn" value="Générer / Récupérer les factures existantes"></div>
         </form>
 
         {% if factures is defined %}
@@ -27,24 +27,24 @@
                         <th>N° Facture</th>
                         <th>Nombre de repas</th>
                         <th>Total</th>
+                        <th>Réglé ?</th>
                         <th>Envoyer la facture ?</th>
-                        <th></th>
                         <th></th>
                     </tr>
                 </thead>
                 <tbody>
                 {% for facture in factures %}
                     {% if facture.noFacture is defined %}
-                        <tr>
+                        <tr class='paye_{{facture.estPaye ?? '0'}}'>
                             <td>{{facture.printNomEnfant()}}</td>
-                            <th>{{facture.printClasse()}}</th>
-                            <th>{{facture.printEtablissement()}}</th>
+                            <td>{{facture.printClasse()}}</td>
+                            <td>{{facture.printEtablissement()}}</td>
                             <td>{{facture.noFacture}}</td>
                             <td>{{facture.nombreRepas}}</td>
                             <td>{{facture.total}} €</td>
+                            <td>{% if facture.estPaye != '1' %}Non{% else %}Oui{% endif %}</td>
                             <td>{% if facture.estPaye != '1' %}<input type="checkbox" class='factures' name="factures[]" id="facture_{{facture.id}}" value="{{facture.id}}" checked>{% endif %}</td>
-                            <td><a href="/contao?do=factures&act=edit&id={{facture.id}}&rt={{rt}}" target="_blank">En savoir plus</a></td>
-                            <td><a href="{{facture.getLienPublique()}}" target="_blank">Voir la facture</a></td>
+                            <td>{{facture.showButtons()|raw}}</td>
                         </tr>
                     {% endif %}
                 {% endfor %}

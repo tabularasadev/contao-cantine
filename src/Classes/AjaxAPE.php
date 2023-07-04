@@ -86,7 +86,7 @@ class AjaxAPE extends \Contao\Controller
                     break;
                 case 'sendMailFacture':
                     $facture = factureModel::findByPk(Input::{$inputType}('item'));
-                    if (!$facture->sendMail()) {
+                    if (!$facture->sendMail(Input::{$inputType}('typeMail'))) {
                         throw new Exception('Erreur d\'envoi de mail', 1);
                     }
                     break;

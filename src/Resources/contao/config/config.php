@@ -39,6 +39,7 @@ $GLOBALS['TL_CSS'][] = 'https://fonts.googleapis.com/css2?family=Material+Symbol
 if (TL_MODE == 'BE') {
     $GLOBALS['TL_CSS'][]        = "//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css";
     $GLOBALS['TL_JAVASCRIPT'][] = "//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js";
+    $GLOBALS['TL_JAVASCRIPT'][] = "https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.4/moment-with-locales.min.js";
     $GLOBALS['TL_JAVASCRIPT'][] = "//cdn.jsdelivr.net/npm/sweetalert2@11";
 
     $GLOBALS['TL_CSS'][] = $GLOBALS['assetsFolder']['ContaoCantineBundle'] . "css/be.css";
@@ -75,7 +76,8 @@ array_insert($GLOBALS['BE_MOD']['apeloin'], 98, array(
         'tables' => array('tl_repas'),
     ),
     'factures'          => array(
-        'tables' => array('tl_facture'),
+        'tables'           => array('tl_facture'),
+        'hideInNavigation' => true,
     ),
     'generationFacture' => array(
         'callback' => beModuleGenFactures::class,
