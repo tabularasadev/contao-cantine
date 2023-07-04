@@ -11,19 +11,32 @@
                     <input type="date" name="dateFin" id="dateFin" required value='{{dateFin}}'>
                 </label>
             </div>
+            <div>
+                <label for="etablissement">Etablissement</label>
+                <select name="etablissement">
+                    <option value="">Tous</option>
+                    {% for key,value in etablissements %}
+                        <option value="{{key}}" {{(key == etablissement)?'selected':''}}>{{value}}</option>
+                    {% endfor %}
+                </select>
+
+            </div>
 
             <input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
             <input type="hidden" name="FORM_SUBMIT" value="listing">
             <div id="submit"><input type="submit" value="Actualiser"></div>
         </form>
     </div>
-    <table id="datatable" class="stripe hover">
+    <table id="datatable" class="stripe hover" data-paging="false">
         <thead>
             <tr>
                 <th>Ecole</th>
                 <th>Classe</th>
                 <th>Enfant</th>
                 <th>Nombre de repas</th>
+                <th>Petit déjeuner</th>
+                <th>Déjeuner</th>
+                <th>Goûter</th>
             </tr>
         </thead>
         <tbody>
@@ -33,6 +46,9 @@
                     <td>{{classes[e.classe]}}</td>
                     <td>{{e.nom}} {{e.prenom}}</td>
                     <td>{{e.countRepas(dateDebut, dateFin)}}</td>
+                    <td>{{e.countMatin(dateDebut, dateFin)}}</td>
+                    <td>{{e.countMidi(dateDebut, dateFin)}}</td>
+                    <td>{{e.countSoir(dateDebut, dateFin)}}</td>
                 </tr>
             {% endfor %}
         </tbody>

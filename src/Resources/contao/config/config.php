@@ -16,12 +16,20 @@
 //use trdev\ContaoCantineBundle
 
 use trdev\ContaoCantineBundle\Classes\AjaxAPE;
+use trdev\ContaoCantineBundle\Element\ceFacture;
 use trdev\ContaoCantineBundle\Module\beModuleCoupon;
+use trdev\ContaoCantineBundle\Module\beModuleGenFactures;
 use trdev\ContaoCantineBundle\Module\beModuleSaisie;
 use trdev\ContaoCantineBundle\Module\beModuleTableauBord;
 
 $GLOBALS['assetsFolder']['ContaoCantineBundle']    = "/bundles/contaocantine/";
 $GLOBALS['bundleNamespace']['ContaoCantineBundle'] = "trdev\\ContaoCantineBundle\\";
+
+$GLOBALS['typePaiements'] = array(
+    'esp' => 'Espèce',
+    'chk' => 'Chèque',
+    'vir' => 'Virement',
+);
 
 $GLOBALS['TL_HOOKS']['outputFrontendTemplate'][] = array(AjaxAPE::class, 'pageLoad');
 
@@ -31,6 +39,7 @@ $GLOBALS['TL_CSS'][] = 'https://fonts.googleapis.com/css2?family=Material+Symbol
 if (TL_MODE == 'BE') {
     $GLOBALS['TL_CSS'][]        = "//cdn.datatables.net/1.13.4/css/jquery.dataTables.min.css";
     $GLOBALS['TL_JAVASCRIPT'][] = "//cdn.datatables.net/1.13.4/js/jquery.dataTables.min.js";
+    $GLOBALS['TL_JAVASCRIPT'][] = "//cdn.jsdelivr.net/npm/sweetalert2@11";
 
     $GLOBALS['TL_CSS'][] = $GLOBALS['assetsFolder']['ContaoCantineBundle'] . "css/be.css";
 }
@@ -42,9 +51,9 @@ $GLOBALS['TL_JAVASCRIPT'][] = ($_ENV['APP_ENV'] == "dev") ? $GLOBALS['assetsFold
 /* #endregion JAVASCRIPTS */
 
 // #region ELEMENTS
-//array_insert($GLOBALS['TL_CTE']['Cantine'], 1, array(
-//    'ceSuivi' => ceSuivi::class,
-//));
+array_insert($GLOBALS['TL_CTE']['ape'], 1, array(
+    'ceFacture' => ceFacture::class,
+));
 // #endregion
 
 // #region FRONTEND MODULES
@@ -53,17 +62,23 @@ $GLOBALS['TL_JAVASCRIPT'][] = ($_ENV['APP_ENV'] == "dev") ? $GLOBALS['assetsFold
 
 //Menu BE
 array_insert($GLOBALS['BE_MOD']['apeloin'], 98, array(
-    'saisie'      => array(
+    'saisie'            => array(
         'callback' => beModuleSaisie::class,
     ),
-    'tableauBord' => array(
+    'tableauBord'       => array(
         'callback' => beModuleTableauBord::class,
     ),
-    'coupons'     => array(
+    'coupons'           => array(
         'callback' => beModuleCoupon::class,
     ),
-    'repas'       => array(
+    'repas'             => array(
         'tables' => array('tl_repas'),
+    ),
+    'factures'          => array(
+        'tables' => array('tl_facture'),
+    ),
+    'generationFacture' => array(
+        'callback' => beModuleGenFactures::class,
     ),
     /*
 'Facture'       => array(
@@ -80,6 +95,9 @@ array_insert($GLOBALS['BE_MOD']['apeloinConfig'], 98, array(
     ),
     'classes'        => array(
         'tables' => array('tl_classe'),
+    ),
+    'tarifs'         => array(
+        'tables' => array('tl_tarif'),
     ),
     /*
 'Facture'       => array(

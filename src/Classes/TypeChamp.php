@@ -33,8 +33,8 @@ class TypeChamp extends \Backend
         $item = array(
             'inputType' => 'text',
             'search'    => true,
-            'eval'      => array('maxlength' => 255, 'rgxp' => 'natural', 'tl_class' => 'w50', 'mandatory' => $obligatoire),
-            'sql'       => "int(10) unsigned NOT NULL default '0'",
+            'eval'      => array('maxlength' => 255, 'rgxp' => 'digit', 'tl_class' => 'w50', 'mandatory' => $obligatoire),
+            'sql'       => "float(10) unsigned NOT NULL default '0'",
         );
 
         return $item;
@@ -65,14 +65,15 @@ class TypeChamp extends \Backend
     #endregion
 
     #region Switch
-    function switch ($obligatoire = false) {
-            $item = array(
-                'inputType' => 'checkbox',
-                'sql'       => "char(1) NOT NULL default '1'",
-                'eval'      => array('tl_class' => 'w50', 'mandatory' => $obligatoire),
-            );
+    public function ouiNon($obligatoire = false, $default = '0')
+    {
+        $item = array(
+            'inputType' => 'checkbox',
+            'sql'       => "char(1) NOT NULL default '" . $default . "'",
+            'eval'      => array('tl_class' => 'clr', 'mandatory' => $obligatoire),
+        );
 
-            return $item;
+        return $item;
     }
     #endregion
 

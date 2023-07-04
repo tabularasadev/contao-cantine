@@ -72,4 +72,115 @@ jQuery("document").ready(function ($) {
         });
     }
     //#endregion
+
+    //#region Envois de toutes les factures
+    $("#sendFactures").on("click", function (event) {
+        event.preventDefault();
+        const vert = "#9ed19e",
+            rouge = "#e98080";
+
+        let progressMax = 70,
+            progress = 0,
+            reussites = 0,
+            echecs = 0,
+            majProgress = function () {
+                progress++;
+                let pourcentage = (progress * 100) / progressMax + "%";
+                $(".progress span").css("width", pourcentage);
+                $(".state span")[0].innerText = progress;
+            };
+
+        Swal.fire({
+            icon: "question",
+            text: "Souhaitez-vous vraiment envoyer les factures listées ci-dessus ?",
+            confirmButtonText: "Envoyer",
+            showCancelButton: true,
+            cancelButtonText: "Annuler",
+            showLoaderOnConfirm: true,
+        }).then((choix) => {
+            if (choix.isConfirmed == true) {
+                let envois = $("input.factures:checked");
+                progressMax = envois.length;
+                $(".state span")[1].innerText = progressMax;
+                $("#envoiEnCours").show();
+                (async function loop() {
+                    return new Promise((resolve, reject) => {
+                        for (let i = 0; i < progressMax; i++) {
+                            let datas = {
+                                action: "sendMailFacture",
+                                item: envois[i].value,
+                            };
+                            $.ajax({
+                                url: "/ajax.html",
+                                data: datas,
+                                type: "POST",
+                                success: function (result) {
+                                    let json = $.parseJSON(result);
+                                    if (json.result == "error") {
+                                        $(envois[i]).closest("tr").css("background", rouge);
+                                        echecs++;
+                                    } else {
+                                        $(envois[i]).closest("tr").css("background", vert);
+                                        reussites++;
+                                    }
+                                    majProgress();
+
+                                    if (reussites + echecs == progressMax) {
+                                        resolve();
+                                    }
+                                },
+                            });
+                        }
+                    });
+                })().then(() => {
+                    Swal.fire({
+                        title: "Envois terminés",
+                        html: `${reussites} réussite(s) pour ${echecs} échec(s)`,
+                    });
+                    $("#envoiEnCours").hide();
+                });
+            }
+        });
+    });
+    //#endregion
+
+    //#region Payement d'une facture
+    $("a.paiement").on("click", function (event) {
+        event.preventDefault();
+        let rgx = /id=([^&]*)/,
+            id = event.delegateTarget.href.match(rgx)[1];
+        Swal.fire({
+            icon: "question",
+            text: "Quel moyen de paiement a été choisi ?",
+            input: "select",
+            inputOptions: {
+                esp: "Espèce",
+                chk: "Chèque",
+                vir: "Virement",
+            },
+            confirmButtonText: "Valider",
+        }).then((result) => {
+            if (result.isConfirmed == true) {
+                let datas = {
+                    action: "majPaiement",
+                    item: id,
+                    choix: result.value,
+                };
+                $.ajax({
+                    url: "/ajax.html",
+                    data: datas,
+                    type: "POST",
+                    success: function (result) {
+                        let json = $.parseJSON(result);
+                        if (json.result == "error") {
+                            alert("erreur");
+                        } else {
+                            document.location.href = document.location.href;
+                        }
+                    },
+                });
+            }
+        });
+    });
+    //#endregion
 });

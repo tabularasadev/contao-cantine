@@ -16,6 +16,16 @@ class enfantModel extends \Model
 
     protected static $strTable = 'tl_enfant';
 
+    public static function getInitialeByPk($id)
+    {
+        $enfant = self::findByPk($id);
+        if ($enfant == null) {
+            return '';
+        }
+
+        return strtoupper($enfant->nom[0] . $enfant->prenom[0]);
+    }
+
     public function getLien()
     {
         $http = ($_SERVER['REQUEST_SCHEME'] == '') ? 'https' : 'http';
@@ -39,7 +49,7 @@ class enfantModel extends \Model
         return sprintf('<img class="qrcode" src="%s" />', $result->getDataUri());
     }
 
-    public function countRepas($dateDebut, $dateFin)
+    public function countRepas($dateDebut, $dateFin, $repas = '')
     {
         $cols = array(
             'nomEnfant = ?',
@@ -55,13 +65,13 @@ class enfantModel extends \Model
         $i = 0;
         if (isset($nbrRepas)) {
             foreach ($nbrRepas as $key) {
-                if (isset($key->petitDej) && $key->petitDej == 'Oui') {
+                if (isset($key->petitDej) && $key->petitDej == 'Oui' && ($repas == '' || $repas == 'petitDej')) {
                     $i = $i + 1;
                 }
-                if (isset($key->dejeuner) && $key->dejeuner == "Oui") {
+                if (isset($key->dejeuner) && $key->dejeuner == "Oui" && ($repas == '' || $repas == 'dejeuner')) {
                     $i = $i + 1;
                 }
-                if (isset($key->gouter) && $key->gouter == "Oui") {
+                if (isset($key->gouter) && $key->gouter == "Oui" && ($repas == '' || $repas == 'gouter')) {
                     $i = $i + 1;
                 }
             }
@@ -118,6 +128,21 @@ class enfantModel extends \Model
             }
         }
         return $res;
+    }
+
+    public function countMatin($deb, $fin)
+    {
+        return $this->countRepas($deb, $fin, 'petitDej');
+    }
+
+    public function countMidi($deb, $fin)
+    {
+        return $this->countRepas($deb, $fin, 'dejeuner');
+    }
+
+    public function countSoir($deb, $fin)
+    {
+        return $this->countRepas($deb, $fin, 'gouter');
     }
 }
 

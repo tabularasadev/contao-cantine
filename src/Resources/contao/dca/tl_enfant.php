@@ -91,7 +91,7 @@ $GLOBALS['TL_DCA'][$t] = array(
     // Palettes
     'palettes'    => array(
         '__selector__' => array(),
-        'default'      => 'nom,prenom,scolarise,etablissement,classe;{system:hide},parent1,parent2,alias',
+        'default'      => 'nom,prenom,scolarise,etablissement,classe;{parents},nomParent1,prenomParent1,nomParent2,prenomParent2,emailParents,adresseFacturation;{system:hide},alias',
     ),
 
     // Subpalettes
@@ -100,20 +100,26 @@ $GLOBALS['TL_DCA'][$t] = array(
 
     // Fields
     'fields'      => array(
-        'id'            => array(
+        'id'                 => array(
             'sql' => "int(10) unsigned NOT NULL auto_increment",
         ),
-        'tstamp'        => array(
+        'tstamp'             => array(
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ),
-        'nom'           => TypeChamp::text(true),
-        'prenom'        => TypeChamp::text(true),
-        'scolarise'     => TypeChamp::select(array('Oui', 'Non')),
-        'etablissement' => TypeChamp::selectTable('tl_etablissement.nom', false, true, true),
-        'classe'        => TypeChamp::selectTable('tl_classe.nom', false, true, true),
-        'parent1'       => TypeChamp::selectTable('tl_member.username', false, true),
-        'parent2'       => TypeChamp::selectTable('tl_member.username', false, true),
-        'alias'         => TypeChamp::alias($t),
+        'nom'                => TypeChamp::text(true),
+        'prenom'             => TypeChamp::text(true),
+        'scolarise'          => TypeChamp::select(array('Oui', 'Non')),
+        'etablissement'      => TypeChamp::selectTable('tl_etablissement.nom', false, true, true),
+        'classe'             => TypeChamp::selectTable('tl_classe.nom', false, true, true),
+        'nomParent1'         => TypeChamp::text(true),
+        'prenomParent1'      => TypeChamp::text(true),
+        'nomParent2'         => TypeChamp::text(),
+        'prenomParent2'      => TypeChamp::text(),
+        'emailParents'       => TypeChamp::text(),
+        'adresseFacturation' => TypeChamp::textarea(true),
+        'parent1'            => TypeChamp::selectTable('tl_member.username', false, true),
+        'parent2'            => TypeChamp::selectTable('tl_member.username', false, true),
+        'alias'              => TypeChamp::alias($t),
     ),
 );
 

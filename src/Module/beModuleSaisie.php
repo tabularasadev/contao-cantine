@@ -38,11 +38,12 @@ class beModuleSaisie extends \BackendModule
                         $repas->date      = $date;
                         $repas->nomEnfant = $unEnfant;
                     }
-
                     foreach ($champs as $ch) {
                         $data = Input::post($ch);
                         if (null != $data && Count($data) > 0) {
                             $repas->{$ch} = (in_array($unEnfant, $data)) ? 'Oui' : 'Non';
+                        } else {
+                            $repas->{$ch} = "Non";
                         }
                     }
                     $repas->save();

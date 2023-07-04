@@ -87,7 +87,7 @@ $GLOBALS['TL_DCA'][$t] = array(
     // Palettes
     'palettes'    => array(
         '__selector__' => array(''),
-        'default'      => '{Base},nom,',
+        'default'      => '{Base},nom,tarif',
     ),
 
     // Subpalettes
@@ -104,6 +104,7 @@ $GLOBALS['TL_DCA'][$t] = array(
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ),
         'nom'    => TypeChamp::text(),
+        'tarif'  => TypeChamp::selectTable('tl_tarif.nom', false, false, true),
     ),
 );
 

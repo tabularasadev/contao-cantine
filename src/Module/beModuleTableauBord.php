@@ -15,12 +15,23 @@ class beModuleTableauBord extends \BackendModule
 
     protected function compile()
     {
-        $rt                        = new RequestToken();
-        $this->Template->rt        = $rt->get();
-        $this->Template->enfants   = enfantModel::findByScolarise('Oui', array('order' => 'nom ASC, prenom ASC'));
-        $this->Template->dateDebut = (null != Input::post('dateDebut')) ? Input::post('dateDebut') : $this->getDateDebut();
-        $this->Template->dateFin   = (null != Input::post('dateFin')) ? Input::post('dateFin') : $this->getDateFin();
-        $etabs                     = array();
+        $rt                            = new RequestToken();
+        $this->Template->rt            = $rt->get();
+        $this->Template->dateDebut     = (null != Input::post('dateDebut')) ? Input::post('dateDebut') : $this->getDateDebut();
+        $this->Template->dateFin       = (null != Input::post('dateFin')) ? Input::post('dateFin') : $this->getDateFin();
+        $this->Template->etablissement = Input::post('etablissement') ?? '';
+
+        if ($this->Template->etablissement != '') {
+            $this->Template->enfants = enfantModel::findBy(array(
+                'scolarise = ?',
+                'etablissement = ?',
+            ), array(
+                'Oui', $this->Template->etablissement,
+            ), array('order' => 'nom ASC, prenom ASC'));
+        } else {
+            $this->Template->enfants = enfantModel::findByScolarise('Oui', array('order' => 'nom ASC, prenom ASC'));
+        }
+        $etabs = array();
         foreach (etablissementModel::findAll() as $e) {
             $etabs[$e->id] = $e->nom;
         }

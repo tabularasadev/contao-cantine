@@ -10,6 +10,7 @@ use Exception;
 use Psr\Log\LogLevel;
 use stdClass;
 use trdev\ContaoCantineBundle\Model\enfantModel;
+use trdev\ContaoCantineBundle\Model\factureModel;
 use trdev\ContaoCantineBundle\Model\repasModel;
 
 class AjaxAPE extends \Contao\Controller
@@ -78,6 +79,16 @@ class AjaxAPE extends \Contao\Controller
                         }
                     }
                     $res['data'] = $repas;
+                    break;
+                case 'majPaiement':
+                    $facture = factureModel::findByPk(Input::{$inputType}('item'));
+                    $facture->setPaiement(Input::{$inputType}('choix'));
+                    break;
+                case 'sendMailFacture':
+                    $facture = factureModel::findByPk(Input::{$inputType}('item'));
+                    if (!$facture->sendMail()) {
+                        throw new Exception('Erreur d\'envoi de mail', 1);
+                    }
                     break;
                 default:
                     throw new Exception('Action ' . Input::{$inputType}('action') . ' non paramétré', 1);

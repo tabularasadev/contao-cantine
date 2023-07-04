@@ -11,6 +11,7 @@
 use trdev\ContaoCantineBundle\Classes\TypeChamp;
 
 $t = basename(__FILE__, '.php');
+
 /**
  * Table tl_bien
  */
@@ -20,6 +21,7 @@ $GLOBALS['TL_DCA'][$t] = array(
     'config'      => array(
         'dataContainer'    => 'Table',
         'enableVersioning' => false, //True si tu veux du versionning
+        'pTable'           => array('tl_enfant'),
         'sql'              => array(
             'keys' => array(
                 'id' => 'primary',
@@ -31,14 +33,13 @@ $GLOBALS['TL_DCA'][$t] = array(
     'list'        => array(
         'sorting'           => array(
             'mode'        => 1,
-            'fields'      => array('dateEdition'),
+            'fields'      => array('nom'),
             'panelLayout' => 'filter;sort,search,limit',
             'flag'        => 12, //https://docs.contao.org/dev/reference/dca/fields/#reference
         ),
         'label'             => array(
-            'fields'         => array('dateEdition', 'enfant:tl_enfant.CONCAT(prenom, " ", nom)', 'noFacture', 'total', 'estPaye', 'typePaiement'),
-            'showColumns'    => true,
-            'label_callback' => array('tl_facture', 'setLabels'),
+            'fields'      => array('nom', 'matin', 'midi', 'soir'),
+            'showColumns' => true,
         ),
         'global_operations' => array(
             'all' => array(
@@ -49,30 +50,26 @@ $GLOBALS['TL_DCA'][$t] = array(
             ),
         ),
         'operations'        => array(
-            'edit'     => array(
+            'edit'   => array(
                 'label' => &$GLOBALS['TL_LANG'][$t]['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
             ),
-            'copy'     => array(
+            'copy'   => array(
                 'label' => &$GLOBALS['TL_LANG'][$t]['copy'],
                 'href'  => 'act=copy',
                 'icon'  => 'copy.gif',
             ),
-            'delete'   => array(
+            'delete' => array(
                 'label'      => &$GLOBALS['TL_LANG'][$t]['delete'],
                 'href'       => 'act=delete',
                 'icon'       => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
             ),
-            'show'     => array(
+            'show'   => array(
                 'label' => &$GLOBALS['TL_LANG'][$t]['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
-            ),
-            'paiement' => array(
-                'icon'  => $GLOBALS['assetsFolder']['ContaoCantineBundle'] . 'images/euro.png',
-                'label' => &$GLOBALS['TL_LANG'][$t]['paiement'],
             ),
         ),
     ),
@@ -90,7 +87,7 @@ $GLOBALS['TL_DCA'][$t] = array(
     // Palettes
     'palettes'    => array(
         '__selector__' => array(''),
-        'default'      => 'noFacture,dateEdition,dateDebut,dateFin,tarifs,nombreRepas,total,enfant;{paiement},datePaiement,estPaye,typePaiement',
+        'default'      => '{Base},nom,matin,midi,soir',
     ),
 
     // Subpalettes
@@ -100,35 +97,20 @@ $GLOBALS['TL_DCA'][$t] = array(
 
     // Fields
     'fields'      => array(
-        'id'           => array(
+        'id'     => array(
             'sql' => "int(10) unsigned NOT NULL auto_increment",
         ),
-        'tstamp'       => array(
+        'tstamp' => array(
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ),
-        'dateEdition'  => TypeChamp::date(),
-        'noFacture'    => TypeChamp::text(),
-        'dateDebut'    => TypeChamp::date(),
-        'dateFin'      => TypeChamp::date(),
-        'tarifs'       => TypeChamp::selectTable('tl_tarif.nom', false, true, false),
-        'nombreRepas'  => TypeChamp::number(),
-        'total'        => TypeChamp::number(),
-        'enfant'       => TypeChamp::selectTable('tl_enfant.CONCAT(prenom, " ", nom)', false, true),
-        'datePaiement' => TypeChamp::date(),
-        'estPaye'      => TypeChamp::ouiNon(),
-        'typePaiement' => TypeChamp::select($GLOBALS['typePaiements'], false, true),
+        'nom'    => TypeChamp::text(),
+        'matin'  => TypeChamp::number(),
+        'midi'   => TypeChamp::number(),
+        'soir'   => TypeChamp::number(),
     ),
 );
 
-class tl_facture extends Backend
+class tl_tarif extends Backend
 {
-    public function setLabels($row, $label, DataContainer $dc, $args)
-    {
-        $args[0] = date('d/m/Y', $args[0]);
-
-        $args[3] = $args[3] . ' €';
-        $args[4] = ($args[4] == 'non') ? 'Non' : 'Oui';
-        return $args;
-    }
 
 }
