@@ -27,7 +27,7 @@
     <table>
         <thead>
             <tr>
-                <th>Créneaux</th>
+                <th>Désignation</th>
                 <th>Nombre de repas</th>
                 <th>Prix unitaire</th>
                 <th>TOTAL</th>
@@ -68,7 +68,7 @@
         </tfoot>
     </table>
     {% if facture.estPaye == '1' %}
-        <p id="dateReglement">Facture payée le {{facture.datePaiement|date('d/m/Y')}} par {{facture.printTypePaiement()}} </p>
+        <p id="dateReglement">Facture payée le {{facture.datePaiement|date('d/m/Y')}} par {{facture.printTypePaiement()}}</p>
     {% endif %}
     <footer>
         <p>Association des Parents d'Eleves - 10, rue André Boutin - 79600 LOUIN - no SIRET : 84379587300010</p>

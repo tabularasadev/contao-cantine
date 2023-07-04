@@ -35,7 +35,6 @@ class beModuleGenFactures extends \BackendModule
     {
         $enfants  = enfantModel::findByScolarise('Oui');
         $factures = array();
-
         if ($enfants) {
             $debut = DateTime::createFromFormat('Y-m-d', $deb)->setTime(0, 0);
             $fin   = DateTime::createFromFormat('Y-m-d', $fin)->setTime(23, 59);

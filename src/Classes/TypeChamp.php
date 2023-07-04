@@ -69,6 +69,7 @@ class TypeChamp extends \Backend
     {
         $item = array(
             'inputType' => 'checkbox',
+            'filter'    => true,
             'sql'       => "char(1) NOT NULL default '" . $default . "'",
             'eval'      => array('tl_class' => 'clr', 'mandatory' => $obligatoire),
         );

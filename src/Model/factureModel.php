@@ -18,9 +18,6 @@ class factureModel extends \Model
 
     private function comptage()
     {
-        if ($this->estPaye === '1') {
-            return false;
-        }
 
         $cols = array(
             'nomEnfant = ?',
@@ -67,7 +64,10 @@ class factureModel extends \Model
 
         $this->total       = $this->coutRepasMatin + $this->coutRepasMidi + $this->coutRepasSoir;
         $this->nombreRepas = $this->nbRepasMatin + $this->nbRepasMidi + $this->nbRepasSoir;
-        $this->save();
+
+        if ($this->estPaye != '1') {
+            $this->save();
+        }
 
         return true;
     }
@@ -183,8 +183,6 @@ class factureModel extends \Model
             $facture->genAlias();
             $facture->save();
         }
-
-        dump($facture->comptage());
 
         return $facture;
     }
