@@ -34,18 +34,20 @@
                 </thead>
                 <tbody>
                 {% for facture in factures %}
-                    <tr>
-                        <td>{{facture.printNomEnfant()}}</td>
-                        <th>{{facture.printClasse()}}</th>
-                        <th>{{facture.printEtablissement()}}</th>
-                        <td>{{facture.noFacture}}</td>
-                        <td>{{facture.nombreRepas}}</td>
-                        <td>{{facture.total}} €</td>
-                        <td><input type="checkbox" class='factures' name="factures[]" id="facture_{{facture.id}}" value="{{facture.id}}" checked></td>
-                        <td><a href="/contao?do=factures&act=edit&id={{facture.id}}&rt={{rt}}" target="_blank">En savoir plus</a></td>
-                        <td><a href="{{facture.getLienPublique()}}" target="_blank">Voir la facture</a></td>
-                    </tr>
-                    {% endfor %}
+                    {% if facture.noFacture is defined %}
+                        <tr>
+                            <td>{{facture.printNomEnfant()}}</td>
+                            <th>{{facture.printClasse()}}</th>
+                            <th>{{facture.printEtablissement()}}</th>
+                            <td>{{facture.noFacture}}</td>
+                            <td>{{facture.nombreRepas}}</td>
+                            <td>{{facture.total}} €</td>
+                            <td>{% if facture.estPaye != '1' %}<input type="checkbox" class='factures' name="factures[]" id="facture_{{facture.id}}" value="{{facture.id}}" checked>{% endif %}</td>
+                            <td><a href="/contao?do=factures&act=edit&id={{facture.id}}&rt={{rt}}" target="_blank">En savoir plus</a></td>
+                            <td><a href="{{facture.getLienPublique()}}" target="_blank">Voir la facture</a></td>
+                        </tr>
+                    {% endif %}
+                {% endfor %}
                 </tbody>
             </table>
             <div class="bt1">

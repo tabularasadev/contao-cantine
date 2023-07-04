@@ -18,7 +18,7 @@ class factureModel extends \Model
 
     private function comptage()
     {
-        if ($this->estPaye != '1') {
+        if ($this->estPaye === '1') {
             return false;
         }
 
@@ -183,6 +183,8 @@ class factureModel extends \Model
             $facture->genAlias();
             $facture->save();
         }
+
+        dump($facture->comptage());
 
         return $facture;
     }
