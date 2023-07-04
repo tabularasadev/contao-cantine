@@ -179,9 +179,14 @@ jQuery("document").ready(function ($) {
                     success: function (result) {
                         let json = $.parseJSON(result);
                         if (json.result == "error") {
-                            alert("erreur");
+                            alert("Erreur lors du paiement");
+                            console.error(json);
                         } else {
-                            document.location.href = document.location.href;
+                            if ($("form#genFacture").length > 0) {
+                                $("form#genFacture").submit();
+                            } else {
+                                document.location.href = document.location.href;
+                            }
                         }
                     },
                 });
@@ -191,7 +196,7 @@ jQuery("document").ready(function ($) {
     //#endregion
 
     //#region Champs date pour la génération de facture
-    $("input[name=dateDebut]").on("change", function () {
+    $("form#genFacture input[name=dateDebut]").on("change", function () {
         let debut = moment(this.value),
             fin = moment(this.value);
         debut.date(1);

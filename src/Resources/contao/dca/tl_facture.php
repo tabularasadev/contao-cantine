@@ -49,31 +49,33 @@ $GLOBALS['TL_DCA'][$t] = array(
             ),
         ),
         'operations'        => array(
-            'edit'     => array(
+            'edit'   => array(
                 'label' => &$GLOBALS['TL_LANG'][$t]['edit'],
                 'href'  => 'act=edit',
                 'icon'  => 'edit.gif',
             ),
-            'copy'     => array(
+            'copy'   => array(
                 'label' => &$GLOBALS['TL_LANG'][$t]['copy'],
                 'href'  => 'act=copy',
                 'icon'  => 'copy.gif',
             ),
-            'delete'   => array(
+            'delete' => array(
                 'label'      => &$GLOBALS['TL_LANG'][$t]['delete'],
                 'href'       => 'act=delete',
                 'icon'       => 'delete.gif',
                 'attributes' => 'onclick="if(!confirm(\'' . $GLOBALS['TL_LANG']['MSC']['deleteConfirm'] . '\'))return false;Backend.getScrollOffset()"',
             ),
-            'show'     => array(
+            'show'   => array(
                 'label' => &$GLOBALS['TL_LANG'][$t]['show'],
                 'href'  => 'act=show',
                 'icon'  => 'show.gif',
             ),
-            'paiement' => array(
-                'icon'  => $GLOBALS['assetsFolder']['ContaoCantineBundle'] . 'images/euro.png',
-                'label' => &$GLOBALS['TL_LANG'][$t]['paiement'],
-            ),
+            /*
+        'paiement' => array(
+        'icon'  => $GLOBALS['assetsFolder']['ContaoCantineBundle'] . 'images/euro.png',
+        'label' => &$GLOBALS['TL_LANG'][$t]['paiement'],
+        ),
+         */
         ),
     ),
 

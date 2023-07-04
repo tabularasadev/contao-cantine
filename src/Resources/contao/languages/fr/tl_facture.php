@@ -17,4 +17,4 @@ $GLOBALS['TL_LANG'][$t]['datePaiement'][0] = "Date du paiement";
 $GLOBALS['TL_LANG'][$t]['estPaye'][0]      = "Est payé ?";
 $GLOBALS['TL_LANG'][$t]['typePaiement'][0] = "Type de paiement";
 
-$GLOBALS['TL_LANG'][$t]['paiement'] = array(' paiement', 'Payer la facture ID %s');
+//$GLOBALS['TL_LANG'][$t]['paiement'] = array(' paiement', 'Payer la facture ID %s');
