@@ -91,7 +91,7 @@ $GLOBALS['TL_DCA'][$t] = array(
     // Palettes
     'palettes'    => array(
         '__selector__' => array(),
-        'default'      => 'nom,prenom,scolarise,etablissement,classe;{parents},nomParent1,prenomParent1,nomParent2,prenomParent2,emailParents,adresseFacturation;{system:hide},alias',
+        'default'      => 'nom,prenom,scolarise,etablissement,classe;{parents},nomParent1,prenomParent1,nomParent2,prenomParent2,emailParents,telParent1,telParent2,adresseFacturation;{system:hide},alias',
     ),
 
     // Subpalettes
@@ -113,9 +113,12 @@ $GLOBALS['TL_DCA'][$t] = array(
         'classe'             => TypeChamp::selectTable('tl_classe.nom', false, true, true),
         'nomParent1'         => TypeChamp::text(true),
         'prenomParent1'      => TypeChamp::text(true),
+        'prenomParent1'      => TypeChamp::text(true),
         'nomParent2'         => TypeChamp::text(),
         'prenomParent2'      => TypeChamp::text(),
-        'emailParents'       => TypeChamp::text(),
+        'telParent1'         => TypeChamp::text(),
+        'telParent2'         => TypeChamp::text(),
+        'emailParents'       => TypeChamp::text(true),
         'adresseFacturation' => TypeChamp::textarea(true),
         'parent1'            => TypeChamp::selectTable('tl_member.username', false, true),
         'parent2'            => TypeChamp::selectTable('tl_member.username', false, true),
