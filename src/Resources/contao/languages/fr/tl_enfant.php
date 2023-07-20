@@ -17,6 +17,8 @@ $GLOBALS['TL_LANG'][$t]['nomParent2'][0]         = "Nom du parent 2";
 $GLOBALS['TL_LANG'][$t]['prenomParent2'][0]      = "Prénom du parent 2";
 $GLOBALS['TL_LANG'][$t]['emailParents'][0]       = "Emails des parents";
 $GLOBALS['TL_LANG'][$t]['emailParents'][1]       = "Séparer par une virgule";
+$GLOBALS['TL_LANG'][$t]['telParent1'][0]         = "Téléphone parent 1";
+$GLOBALS['TL_LANG'][$t]['telParent2'][0]         = "Téléphone parent 2";
 $GLOBALS['TL_LANG'][$t]['adresseFacturation'][0] = "Adresse de facturation";
 $GLOBALS['TL_LANG'][$t]['adresseFacturation'][1] = "Adresse postale, présente sur la facture";
 

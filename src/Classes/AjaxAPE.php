@@ -82,7 +82,7 @@ class AjaxAPE extends \Contao\Controller
                     break;
                 case 'majPaiement':
                     $facture = factureModel::findByPk(Input::{$inputType}('item'));
-                    $facture->setPaiement(Input::{$inputType}('choix'));
+                    $facture->setPaiement(Input::{$inputType}('choix'), Input::{$inputType}('date'));
                     break;
                 case 'sendMailFacture':
                     $facture = factureModel::findByPk(Input::{$inputType}('item'));

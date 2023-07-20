@@ -27,7 +27,7 @@
             <div id="submit"><input type="submit" value="Actualiser"></div>
         </form>
     </div>
-    <table id="datatable" class="stripe hover" data-paging="false">
+    <table id="repasTotaux" class="stripe hover" data-paging="false">
         <thead>
             <tr>
                 <th>Ecole</th>
@@ -52,5 +52,40 @@
                 </tr>
             {% endfor %}
         </tbody>
+        <tfoot>
+            <tr>
+                <td colspan="3" style="text-align:right;">TOTAL</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+                <td>0</td>
+            </tr>
+        </tfoot>
     </table>
+    <script>
+        new DataTable('#repasTotaux', {
+    footerCallback: function (row, data, start, end, display) {
+        let api = this.api();
+
+        // Remove the formatting to get integer data for summation
+        let intVal = function (i) {
+            return typeof i === 'string'
+                ? i.replace(/[\$,]/g, '') * 1
+                : typeof i === 'number'
+                ? i
+                : 0;
+        };
+
+        let repas=api.column(3,{ page: 'current' }).data().reduce((a, b) => intVal(a) + intVal(b), 0),
+            matin=api.column(4,{ page: 'current' }).data().reduce((a, b) => intVal(a) + intVal(b), 0),
+            midi=api.column(5,{ page: 'current' }).data().reduce((a, b) => intVal(a) + intVal(b), 0),
+            soir=api.column(6,{ page: 'current' }).data().reduce((a, b) => intVal(a) + intVal(b), 0);
+        // Update footer
+        api.column(3).footer().innerHTML = repas;
+        api.column(4).footer().innerHTML = matin;
+        api.column(5).footer().innerHTML = midi;
+        api.column(6).footer().innerHTML = soir;
+    }
+});
+    </script>
 </div>

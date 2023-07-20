@@ -99,3 +99,7 @@ div.options > div {
   width: 0;
   display: block;
 }
+
+table tfoot {
+  font-weight: bold;
+}

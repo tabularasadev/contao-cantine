@@ -157,12 +157,18 @@ jQuery("document").ready(function ($) {
             id = event.delegateTarget.href.match(rgx)[1];
         Swal.fire({
             icon: "question",
-            text: "Quel moyen de paiement a été choisi ?",
-            input: "select",
-            inputOptions: {
-                esp: "Espèce",
-                chk: "Chèque",
-                vir: "Virement",
+            title: "Date et type de paiement ?",
+            html: `<input type="date" id="date" class="swal2-input" placeholder="date du paiement"><br/>
+                    <div class="swal2-radio" style="display: flex;"><label><input type="radio" name="swal2-radio" value="esp"><span class="swal2-label">Espèce</span></label>
+                    <label><input type="radio" name="swal2-radio" value="chk"><span class="swal2-label">Chèque</span></label>
+                    <label><input type="radio" name="swal2-radio" value="vir"><span class="swal2-label">Virement</span></label></div>`,
+            preConfirm: () => {
+                let date = Swal.getPopup().querySelector("#date").value,
+                    paiement = Swal.getPopup().querySelector("input[name=swal2-radio]:checked").value;
+                if (!date || !paiement) {
+                    Swal.showValidationMessage(`Merci de renseigner tous les champs`);
+                }
+                return { date: date, paiement: paiement };
             },
             confirmButtonText: "Valider",
         }).then((result) => {
@@ -170,7 +176,8 @@ jQuery("document").ready(function ($) {
                 let datas = {
                     action: "majPaiement",
                     item: id,
-                    choix: result.value,
+                    date: result.value.date,
+                    choix: result.value.paiement,
                 };
                 $.ajax({
                     url: "/ajax.html",

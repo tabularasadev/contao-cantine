@@ -5,6 +5,7 @@ namespace trdev\ContaoCantineBundle\Model;
 use Contao\Email;
 use Contao\RequestToken;
 use Contao\System;
+use DateTime;
 
 class factureModel extends \Model
 {
@@ -299,9 +300,10 @@ class factureModel extends \Model
         return $res;
     }
 
-    public function setPaiement($choix)
+    public function setPaiement($choix, $date)
     {
-        $this->datePaiement = time();
+        $date               = DateTime::createFromFormat('Y-m-d', $date);
+        $this->datePaiement = $date->format('U');
         $this->estPaye      = '1';
         $this->typePaiement = $choix;
         $this->save();
