@@ -1,64 +1,78 @@
 <div id="cantine">
-    <div id="filtres">
-        <form action="" method="post" id="genFacture">
-            <h3>Filtres</h3>
-            <div class="options">
-                <div>
-                    <label for="dateDebut">Date de début</label>
-                    <input type="date" name="dateDebut" required value='{{dateDebut}}'>
-                </div>
-                <div>
-                    <label for="dateFin">Date de fin</label>
-                    <input type="date" name="dateFin" required value='{{dateFin}}' readonly='true'>
-                </div>
-            </div>
-            <input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
-            <input type="hidden" name="FORM_SUBMIT" value="genFacture">
-            <div id="submit" class="bt1"><input type="submit" class="btn" value="Générer / Récupérer les factures existantes"></div>
-        </form>
+	<div id="filtres">
+		<form action="" method="post" id="genFacture">
+			<h3>Filtres</h3>
+			<div class="options">
+				<div>
+					<label for="dateDebut">Date de début</label>
+					<input type="date" name="dateDebut" required value='{{dateDebut}}'>
+				</div>
+				<div>
+					<label for="dateFin">Date de fin</label>
+					<input type="date" name="dateFin" required value='{{dateFin}}' readonly='true'>
+				</div>
+			</div>
+			<input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
+			<input type="hidden" name="FORM_SUBMIT" value="genFacture">
+			<div id="submit" class="bt1"><input type="submit" class="btn" value="Générer / Récupérer les factures existantes"></div>
+		</form>
 
-        {% if factures is defined %}
-            <table id="datatable" class="stripe hover" data-paging="false">
-                <thead>
-                    <tr>
-                        <th>Enfant</th>
-                        <th>Classe</th>
-                        <th>Etablissement</th>
-                        <th>N° Facture</th>
-                        <th>Nombre de repas</th>
-                        <th>Total</th>
-                        <th>Réglé ?</th>
-                        <th>Envoyer la facture ?</th>
-                        <th></th>
-                    </tr>
-                </thead>
-                <tbody>
-                {% for facture in factures %}
-                    {% if facture.noFacture is defined %}
-                        <tr class='paye_{{facture.estPaye ?? '0'}}'>
-                            <td>{{facture.printNomEnfant()}}</td>
-                            <td>{{facture.printClasse()}}</td>
-                            <td>{{facture.printEtablissement()}}</td>
-                            <td>{{facture.noFacture}}</td>
-                            <td>{{facture.nombreRepas}}</td>
-                            <td>{{facture.total}} €</td>
-                            <td>{% if facture.estPaye != '1' %}Non{% else %}Oui{% endif %}</td>
-                            <td>{% if facture.estPaye != '1' %}<input type="checkbox" class='factures' name="factures[]" id="facture_{{facture.id}}" value="{{facture.id}}" checked>{% endif %}</td>
-                            <td>{{facture.showButtons()|raw}}</td>
-                        </tr>
-                    {% endif %}
-                {% endfor %}
-                </tbody>
-            </table>
-            <div class="bt1">
-                <a href="#" id="sendFactures">Envoyer les factures par email</a>
-            </div>
-            <div id="envoiEnCours" style='display:none'>
-                <img src="/bundles/contaocantine/images/hourglass.gif" alt="">
-                <p>Envoi des emails en cours</p>
-                <p  class='state'><span></span>/<span></span></p>
-                <div class="progress"><span></span></div>
-            </div>
-        {% endif %}
-    </div>
+		{% if factures is defined %}
+			<table id="datatable" class="stripe hover" data-paging="false">
+				<thead>
+					<tr>
+						<th>Enfant</th>
+						<th>Classe</th>
+						<th>Etablissement</th>
+						<th>N° Facture</th>
+						<th>Nombre de repas</th>
+						<th>Total</th>
+						<th>Réglé ?</th>
+						<th>Envoyer la facture ?</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for facture in factures %}
+						{% if facture.noFacture is defined %}
+							<tr class='paye_{{facture.estPaye ?? ' 0'}}'>
+								<td>{{facture.printNomEnfant()}}</td>
+								<td>{{facture.printClasse()}}</td>
+								<td>{{facture.printEtablissement()}}</td>
+								<td>{{facture.noFacture}}</td>
+								<td>{{facture.nombreRepas}}</td>
+								<td>{{facture.total}}
+									€</td>
+								<td>
+									{% if facture.estPaye != '1' %}Non{% else %}Oui
+									{% endif %}
+								</td>
+								<td>
+									{% if facture.estPaye != '1' %}<input type="checkbox" class='factures' name="factures[]" id="facture_{{facture.id}}" value="{{facture.id}}" checked>
+									{% endif %}
+								</td>
+								<td>{{facture.showButtons()|raw}}</td>
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+			<div class="bt1">
+				<a href="#" id="sendFactures">Envoyer les factures par email</a>
+			</div>
+			<div class="bt1">
+				<a href="/contao?do=generationFacture&exportFrom={{dateDebut}}&exportTo={{dateFin}}" id="exportExcel">Export Excel</a>
+			</div>
+			<div id="envoiEnCours" style='display:none'>
+				<img src="/bundles/contaocantine/images/hourglass.gif" alt="">
+				<p>Envoi des emails en cours</p>
+				<p class='state'>
+					<span></span>/<span></span>
+				</p>
+				<div class="progress">
+					<span></span>
+				</div>
+			</div>
+		{% endif %}
+	</div>
 </div>

@@ -5,8 +5,10 @@ namespace trdev\ContaoCantineBundle\Module;
 use Contao\Input;
 use Contao\RequestToken;
 use Safe\DateTime;
+use Shuchkin\SimpleXLSXGen;
 use trdev\ContaoCantineBundle\Model\enfantModel;
 use trdev\ContaoCantineBundle\Model\factureModel;
+use trdev\ContaoFonctionsBundle\Util\FcAddons;
 
 class beModuleGenFactures extends \BackendModule
 {
@@ -22,6 +24,11 @@ class beModuleGenFactures extends \BackendModule
             $dateDebut = Input::post('dateDebut');
             $dateFin   = Input::post('dateFin');
             $this->generation($dateDebut, $dateFin);
+        } elseif (Input::get('exportFrom') != '' && Input::get('exportTo') != '') {
+            $dateDebut = Input::get('exportFrom');
+            $dateFin   = Input::get('exportTo');
+            $this->generation($dateDebut, $dateFin);
+            $this->export($dateDebut, $dateFin);
         } else {
             $dateDebut = date('Y-m-01');
             $dateFin   = date('Y-m-t');
@@ -29,6 +36,42 @@ class beModuleGenFactures extends \BackendModule
 
         $this->Template->dateDebut = $dateDebut;
         $this->Template->dateFin   = $dateFin;
+    }
+
+    private function export($dateDebut, $dateFin)
+    {
+        $datas = [[
+            "NUMERO DE FACTURE",
+            "MONTANT",
+            "STATUT",
+            "TYPE DE PAIEMENT",
+            "DATE DU PAIEMENT",
+            "NOM PRENOM",
+            "ETABLISSEMENT",
+            "CLASSE",
+        ]];
+
+        foreach ($this->Template->factures as $f) {
+            $datas[] = [
+                $f->noFacture,
+                $f->total . ' €',
+                ($f->estPaye) ? 'Payée' : 'Impayée',
+                ($f->typePaiement != '') ? $GLOBALS['typePaiements'][$f->typePaiement] : '',
+                ($f->datePaiement != '') ? date('d/m/Y', $f->datePaiement) : '',
+                $f->printNomEnfant(),
+                $f->printEtablissement(),
+                $f->printClasse(),
+            ];
+        }
+
+        if (Count($datas) > 1) {
+            $titre = sprintf('Factures du %s au %s', $dateDebut, $dateFin);
+            $alias = FcAddons::generateAlias($titre);
+            SimpleXLSXGen::fromArray($datas)
+                ->setTitle($titre)
+                ->setSubject($titre)
+                ->downloadAs($alias . '.xlsx');
+        }
     }
 
     private function generation($deb, $fin)
