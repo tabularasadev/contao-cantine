@@ -2,6 +2,8 @@
 
 namespace trdev\ContaoCantineBundle\Module;
 
+use Contao\FilesModel;
+use Contao\Folder;
 use Contao\Input;
 use Contao\RequestToken;
 use Safe\DateTime;
@@ -40,7 +42,11 @@ class beModuleGenFactures extends \BackendModule
 
     private function export($dateDebut, $dateFin)
     {
-        $datas = [[
+        $d = DateTime::createFromFormat('Y-m-d', $dateDebut);
+        $f = DateTime::createFromFormat('Y-m-d', $dateFin);
+
+        $titre = sprintf('Factures du %s au %s', $d->format('d-m-Y'), $f->format('d-m-Y'));
+        $datas = [['<center>' . $titre . '</center>'], [
             "NUMERO DE FACTURE",
             "MONTANT",
             "STATUT",
@@ -64,13 +70,32 @@ class beModuleGenFactures extends \BackendModule
             ];
         }
 
-        if (Count($datas) > 1) {
-            $titre = sprintf('Factures du %s au %s', $dateDebut, $dateFin);
-            $alias = FcAddons::generateAlias($titre);
+        if (Count($datas) > 2) {
+            $dossier = 'files/tabularasa/documents/' . date('y');
+
+            if (!file_exists($dossier)) {
+                mkdir($dossier, 0777, true);
+            }
+
+            $folderModel = new Folder($dossier);
+            if ($folderModel->isEmpty() && !$folderModel->isUnprotected()) {
+                $folderModel->unprotect();
+            }
+
+            $fileName = $dossier . '/' . FcAddons::generateAlias($titre) . '.xlsx';
+            $model    = FilesModel::findByPath($fileName);
+            dump($model);
+
             SimpleXLSXGen::fromArray($datas)
                 ->setTitle($titre)
+                ->mergeCells('A1:H1')
                 ->setSubject($titre)
-                ->downloadAs($alias . '.xlsx');
+                ->saveAs($fileName);
+
+            $http = ($_SERVER['REQUEST_SCHEME'] == '') ? 'https' : 'http';
+            $url  = sprintf('%s://%s/%s', $http, $_SERVER['HTTP_HOST'], $fileName);
+            header('Location: ' . $url);
+            exit();
         }
     }
 
