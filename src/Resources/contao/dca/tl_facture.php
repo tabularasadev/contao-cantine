@@ -92,7 +92,7 @@ $GLOBALS['TL_DCA'][$t] = array(
     // Palettes
     'palettes'    => array(
         '__selector__' => array(''),
-        'default'      => 'noFacture,dateEdition,dateDebut,dateFin,tarifs,nombreRepas,total,enfant;{paiement},datePaiement,estPaye,typePaiement',
+        'default'      => 'noFacture,dateEdition,dateDebut,dateFin,tarifs,nombreRepas,absences,adhesions,total,enfant;{paiement},datePaiement,estPaye,typePaiement',
     ),
 
     // Subpalettes
@@ -114,6 +114,8 @@ $GLOBALS['TL_DCA'][$t] = array(
         'dateFin'      => TypeChamp::date(),
         'tarifs'       => TypeChamp::selectTable('tl_tarif.nom', false, true, false),
         'nombreRepas'  => TypeChamp::number(),
+        'absences'     => TypeChamp::number(),
+        'adhesions'    => TypeChamp::number(),
         'total'        => TypeChamp::number(),
         'enfant'       => TypeChamp::selectTable('tl_enfant.CONCAT(prenom, " ", nom)', false, true),
         'datePaiement' => TypeChamp::date(),

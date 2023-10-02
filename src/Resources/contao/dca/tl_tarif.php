@@ -38,7 +38,7 @@ $GLOBALS['TL_DCA'][$t] = array(
             'flag'        => 12, //https://docs.contao.org/dev/reference/dca/fields/#reference
         ),
         'label'             => array(
-            'fields'      => array('nom', 'matin', 'midi', 'soir'),
+            'fields'      => array('nom', 'matin', 'midi', 'soir', 'absence', 'adhesion'),
             'showColumns' => true,
         ),
         'global_operations' => array(
@@ -87,7 +87,7 @@ $GLOBALS['TL_DCA'][$t] = array(
     // Palettes
     'palettes'    => array(
         '__selector__' => array(''),
-        'default'      => '{Base},nom,matin,midi,soir',
+        'default'      => '{Base},nom,matin,midi,soir,absence,adhesion',
     ),
 
     // Subpalettes
@@ -97,16 +97,18 @@ $GLOBALS['TL_DCA'][$t] = array(
 
     // Fields
     'fields'      => array(
-        'id'     => array(
+        'id'       => array(
             'sql' => "int(10) unsigned NOT NULL auto_increment",
         ),
-        'tstamp' => array(
+        'tstamp'   => array(
             'sql' => "int(10) unsigned NOT NULL default '0'",
         ),
-        'nom'    => TypeChamp::text(),
-        'matin'  => TypeChamp::number(),
-        'midi'   => TypeChamp::number(),
-        'soir'   => TypeChamp::number(),
+        'nom'      => TypeChamp::text(),
+        'matin'    => TypeChamp::number(),
+        'midi'     => TypeChamp::number(),
+        'soir'     => TypeChamp::number(),
+        'absence'  => TypeChamp::number(),
+        'adhesion' => TypeChamp::number(),
     ),
 );
 

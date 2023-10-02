@@ -1,85 +1,118 @@
 {% if facture is defined %}
-<div id="facture">
-    <header>
-        <div>
-            <img src="/files/tabularasa/images/design/logo.jpg" alt="">
-        </div>
-        <div>
-            <h2>Association des parents d'élèves<br/>RPI écoles publiques Louin - Saint Loup Lamairé</h2>
-            <h1>Facture repas</h1>
-        </div>
-    </header>
-    <div id="infos">
-        <div>
-            <p><b>Enfant :</b> {{facture.enfant.nom|upper}} {{facture.enfant.prenom|capitalize}}</p>
-            <p>{{facture.enfant.nomParent1|upper}} {{facture.enfant.prenomParent1|capitalize}}</p>
-            <div class="adresse">
-                {{facture.enfant.adresseFacturation|raw}}
-            </div>
-        </div>
-        <div>
-            <p><b>Date d'édition :</b> {{facture.dateEdition|date('d/m/Y')}}</p>
-            <p><b>FACTURE N° </b> {{facture.noFacture}}</p>
-            <p><b>Période :</b> du {{facture.dateDebut|date('d/m')}} au {{facture.dateFin|date('d/m/Y')}}</p>
-        </div>
-    </div>
-    <h3>Présences</h3>
-    <table>
-        <thead>
-            <tr>
-                <th>Désignation</th>
-                <th>Nombre de repas</th>
-                <th>Prix unitaire</th>
-                <th>TOTAL</th>
-            </tr>
-        </thead>
-        <tbody>
-            {% if facture.getNbRepasMatin() > 0 %}
-                <tr>
-                    <td>Garderie, petit-déjeuner</td>
-                    <td>{{facture.getNbRepasMatin()}}</td>
-                    <td>{{facture.printEuro('tarifMatin')}}</td>
-                    <td>{{facture.printEuro('totalMatin')}}</td>
-                </tr>
-            {% endif %}
-            {% if facture.getNbRepasMidi() > 0 %}
-                <tr>
-                    <td>Cantine scolaire, déjeuner</td>
-                    <td>{{facture.getNbRepasMidi()}}</td>
-                    <td>{{facture.printEuro('tarifMidi')}}</td>
-                    <td>{{facture.printEuro('totalMidi')}}</td>
-                </tr>
-            {% endif %}
-            {% if facture.getNbRepasSoir() > 0 %}
-                <tr>
-                    <td>Garderie, goûter</td>
-                    <td>{{facture.getNbRepasSoir()}}</td>
-                    <td>{{facture.printEuro('tarifSoir')}}</td>
-                    <td>{{facture.printEuro('totalSoir')}}</td>
-                </tr>
-            {% endif %}
-        </tbody>
-        <tfoot>
-            <tr>
-                <td></td>
-                <td colspan='2'>Total à régler</td>
-                <td>{{facture.printEuro('total')}}</td>
-            </tr>
-        </tfoot>
-    </table>
-    <div id="infoReglement">
-    {% if facture.estPaye == '1' %}
-        <p>Facture payée le {{facture.datePaiement|date('d/m/Y')}} par {{facture.printTypePaiement()}}</p>
-    {% else %}
-        <p>Facture payable à réception.</p>
-        <p>Indiquez le numéro de votre facture pour tous les types de règlements.</p>
-        <p>Règlement par virement de préférence.</p>
-    {% endif %}
-    </div>
-    <footer>
-        <p>Association des Parents d'Eleves - 10, rue André Boutin - 79600 LOUIN - no SIRET : 84379587300010</p>
-        <p>Contact : cantine@ape-stloup-louin.fr</p>
-        <p>APE ECOLES ST LOUP LOUIN - IBAN : FR76 1170 6000 01010019 0700 083 - BIC BANK :AGRlFRPP817</p>
-    </footer>
-</div>
+	<div id="facture">
+		<header>
+			<div>
+				<img src="/files/tabularasa/images/design/logo.jpg" alt="">
+			</div>
+			<div>
+				<h2>Association des parents d'élèves<br/>RPI écoles publiques Louin - Saint Loup Lamairé</h2>
+				<h1>Facture repas</h1>
+			</div>
+		</header>
+		<div id="infos">
+			<div>
+				<p>
+					<b>Enfant :</b>
+					{{facture.enfant.nom|upper}}
+					{{facture.enfant.prenom|capitalize}}</p>
+				<p>{{facture.enfant.nomParent1|upper}}
+					{{facture.enfant.prenomParent1|capitalize}}</p>
+				<div class="adresse">
+					{{facture.enfant.adresseFacturation|raw}}
+				</div>
+			</div>
+			<div>
+				<p>
+					<b>Date d'édition :</b>
+					{{facture.dateEdition|date('d/m/Y')}}</p>
+				<p>
+					<b>FACTURE N°
+					</b>
+					{{facture.noFacture}}</p>
+				<p>
+					<b>Période :</b>
+					du
+					{{facture.dateDebut|date('d/m')}}
+					au
+					{{facture.dateFin|date('d/m/Y')}}</p>
+			</div>
+		</div>
+		<h3>Présences</h3>
+		<table>
+			<thead>
+				<tr>
+					<th>Désignation</th>
+					<th>Nombre de repas</th>
+					<th>Prix unitaire</th>
+					<th>TOTAL</th>
+				</tr>
+			</thead>
+			<tbody>
+				{% if facture.getNbRepasMatin() > 0 %}
+					<tr>
+						<td>Garderie, petit-déjeuner</td>
+						<td>{{facture.getNbRepasMatin()}}</td>
+						<td>{{facture.printEuro('tarifMatin')}}</td>
+						<td>{{facture.printEuro('totalMatin')}}</td>
+					</tr>
+				{% endif %}
+				{% if facture.getNbRepasMidi() > 0 %}
+					<tr>
+						<td>Cantine scolaire, déjeuner</td>
+						<td>{{facture.getNbRepasMidi()}}</td>
+						<td>{{facture.printEuro('tarifMidi')}}</td>
+						<td>{{facture.printEuro('totalMidi')}}</td>
+					</tr>
+				{% endif %}
+				{% if facture.getNbRepasSoir() > 0 %}
+					<tr>
+						<td>Garderie, goûter</td>
+						<td>{{facture.getNbRepasSoir()}}</td>
+						<td>{{facture.printEuro('tarifSoir')}}</td>
+						<td>{{facture.printEuro('totalSoir')}}</td>
+					</tr>
+				{% endif %}
+				{% if facture.getNbAbsences() > 0 %}
+					<tr>
+						<td>Absence non justifiée</td>
+						<td>{{facture.getNbAbsences()}}</td>
+						<td>{{facture.printEuro('tarifAbsence')}}</td>
+						<td>{{facture.printEuro('totalAbsence')}}</td>
+					</tr>
+				{% endif %}
+				{% if facture.getNbAdhesions() > 0 %}
+					<tr>
+						<td>Adhésion</td>
+						<td>{{facture.getNbAdhesions()}}</td>
+						<td>{{facture.printEuro('tarifAdhesion')}}</td>
+						<td>{{facture.printEuro('totalAdhesion')}}</td>
+					</tr>
+				{% endif %}
+			</tbody>
+			<tfoot>
+				<tr>
+					<td></td>
+					<td colspan='2'>Total à régler</td>
+					<td>{{facture.printEuro('total')}}</td>
+				</tr>
+			</tfoot>
+		</table>
+		<div id="infoReglement">
+			{% if facture.estPaye == '1' %}
+				<p>Facture payée le
+					{{facture.datePaiement|date('d/m/Y')}}
+					par
+					{{facture.printTypePaiement()}}</p>
+			{% else %}
+				<p>Facture payable à réception.</p>
+				<p>Indiquez le numéro de votre facture pour tous les types de règlements.</p>
+				<p>Règlement par virement de préférence.</p>
+			{% endif %}
+		</div>
+		<footer>
+			<p>Association des Parents d'Eleves - 10, rue André Boutin - 79600 LOUIN - no SIRET : 84379587300010</p>
+			<p>Contact : cantine@ape-stloup-louin.fr</p>
+			<p>APE ECOLES ST LOUP LOUIN - IBAN : FR76 1170 6000 01010019 0700 083 - BIC BANK :AGRlFRPP817</p>
+		</footer>
+	</div>
 {% endif %}

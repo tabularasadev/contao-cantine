@@ -70,10 +70,14 @@ class AjaxAPE extends \Contao\Controller
                                 $rp->matin = ($unRepas->petitDej === 'Oui') ? 1 : 0;
                                 $rp->midi  = ($unRepas->dejeuner === 'Oui') ? 1 : 0;
                                 $rp->soir  = ($unRepas->gouter === 'Oui') ? 1 : 0;
+                                $rp->abs   = ($unRepas->absence === 'Oui') ? 1 : 0;
+                                $rp->adh   = ($unRepas->adhesion === 'Oui') ? 1 : 0;
                             } else {
                                 $rp->matin = 0;
                                 $rp->midi  = 0;
                                 $rp->soir  = 0;
+                                $rp->abs   = 0;
+                                $rp->adh   = 0;
                             }
                             $repas[] = $rp;
                         }

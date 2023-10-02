@@ -14,9 +14,13 @@ class factureModel extends \Model
     private $nbRepasMatin   = 0;
     private $nbRepasMidi    = 0;
     private $nbRepasSoir    = 0;
+    private $nbAbsences     = 0;
+    private $nbAdhesions    = 0;
     private $coutRepasMatin = 0;
     private $coutRepasMidi  = 0;
     private $coutRepasSoir  = 0;
+    private $coutAbsences   = 0;
+    private $coutAdhesions  = 0;
 
     private function comptage()
     {
@@ -46,6 +50,14 @@ class factureModel extends \Model
             if (isset($r->gouter) && $r->gouter == "Oui") {
                 $this->nbRepasSoir++;
             }
+
+            if (isset($r->absence) && $r->absence == "Oui") {
+                $this->nbAbsences++;
+            }
+
+            if (isset($r->adhesion) && $r->adhesion == "Oui") {
+                $this->nbAdhesions++;
+            }
         }
 
         $tarifs = tarifModel::findByPk($this->tarifs);
@@ -63,9 +75,22 @@ class factureModel extends \Model
         if ($this->nbRepasSoir > 0) {
             $this->coutRepasSoir = $this->nbRepasSoir * floatval($tarifs->soir);
         }
+        if ($this->nbRepasAbsence > 0) {
+            $this->coutRepasSoir = $this->nbRepasAbsence * floatval($tarifs->soir);
+        }
 
-        $this->total       = $this->coutRepasMatin + $this->coutRepasMidi + $this->coutRepasSoir;
+        if ($this->nbAbsences > 0) {
+            $this->coutAbsences = $this->nbAbsences * floatval($tarifs->absence);
+        }
+
+        if ($this->nbAdhesions > 0) {
+            $this->coutAdhesions = $this->nbAdhesions * floatval($tarifs->adhesion);
+        }
+
+        $this->total       = $this->coutRepasMatin + $this->coutRepasMidi + $this->coutRepasSoir + $this->coutAbsences + $this->coutAdhesions;
         $this->nombreRepas = $this->nbRepasMatin + $this->nbRepasMidi + $this->nbRepasSoir;
+        $this->absences    = $this->nbAbsences;
+        $this->adhesions   = $this->nbAdhesions;
 
         if ($this->estPaye != '1') {
             $this->save();
@@ -121,6 +146,22 @@ class factureModel extends \Model
             }
         }
         return null;
+    }
+
+    public function getNbAbsences()
+    {
+        if (!$this->nbAbsences) {
+            $this->comptage();
+        }
+        return $this->nbAbsences;
+    }
+
+    public function getNbAdhesions()
+    {
+        if (!$this->nbAdhesions) {
+            $this->comptage();
+        }
+        return $this->nbAdhesions;
     }
 
     public function getNbRepasMatin()
@@ -238,6 +279,18 @@ class factureModel extends \Model
                 break;
             case 'total':
                 $compte = $this->total;
+                break;
+            case 'tarifAbsence':
+                $compte = $this->tarifs->absence;
+                break;
+            case 'totalAbsence':
+                $compte = $this->coutAbsences;
+                break;
+            case 'tarifAdhesion':
+                $compte = $this->tarifs->adhesion;
+                break;
+            case 'totalAdhesion':
+                $compte = $this->coutAdhesion;
                 break;
             default:
                 $compte = 0;

@@ -1,51 +1,67 @@
 <div id="cantine">
-    <div id="filtres">
-        <form action="" method="post">
-            <h3>Filtres</h3>
-            <select class="nomClasse" name="nomClasse" id="nomClasse" required>
-                <option value="">Choix de la classe</option>
-                    {% for c in classe %}
-                        <option value="{{c.id}}">{{c.nom}}</option>
-                    {% endfor %}
-            </select>
-            <select class="nomEtablissement" name="nomEtablissement" id="nomEtablissement" required>
-                <option value="">Choix de l'établissement</option>
-                    {% for eta in etablissement %}
-                        <option value="{{eta.id}}">{{eta.nom}}</option>
-                    {% endfor %}
-            </select>
-        </form>
-    </div>
-    <div id="formListing">
-        <form action=""  method="post">
-            <div>
-                <label for='date'>Veuillez saisir la date du jour :</label>
-                <input type="date" name="date" id="date" required>
-            </div>
-            <table id="presences" class="tableauApe">
-                <thead>
-                    <tr>
-                        <th>Enfant</th>
-                        <th>Présence petit déjeuner ?</th>
-                        <th>Présence au déjeuner ?</th>
-                        <th>Présence au goûter ?</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {% for e in enfant %}
-                        <tr id='enfant_{{e.id}}'>
-                            <td>{{e.nom}} {{e.prenom}} <input type="hidden" name="enfants[]" value='{{e.id}}'></td>
-                            <td><label><input id='matin_{{e.id}}' type="checkbox" name="petitDej[]" value="{{e.id}}" {{(repas is defined and e.id in repas["petitDej"])?"checked":""}}></label></td>
-                            <td><label><input id='midi_{{e.id}}' type="checkbox" name="dejeuner[]" value="{{e.id}}" {{(repas is defined and e.id in repas["dejeuner"])?"checked":""}}></label></td>
-                            <td><label><input id='soir_{{e.id}}' type="checkbox" name="gouter[]" value="{{e.id}}" {{(repas is defined and e.id in repas["gouter"])?"checked":""}}></label></td>
-                        </tr>
-                    {% endfor %}
-                </tbody>
-            </table>
+	<div id="filtres">
+		<form action="" method="post">
+			<h3>Filtres</h3>
+			<select class="nomClasse" name="nomClasse" id="nomClasse" required>
+				<option value="">Choix de la classe</option>
+				{% for c in classe %}
+					<option value="{{c.id}}">{{c.nom}}</option>
+				{% endfor %}
+			</select>
+			<select class="nomEtablissement" name="nomEtablissement" id="nomEtablissement" required>
+				<option value="">Choix de l'établissement</option>
+				{% for eta in etablissement %}
+					<option value="{{eta.id}}">{{eta.nom}}</option>
+				{% endfor %}
+			</select>
+		</form>
+	</div>
+	<div id="formListing">
+		<form action="" method="post">
+			<div>
+				<label for='date'>Veuillez saisir la date du jour :</label>
+				<input type="date" name="date" id="date" required>
+			</div>
+			<table id="presences" class="tableauApe">
+				<thead>
+					<tr>
+						<th>Enfant</th>
+						<th>Présence petit déjeuner ?</th>
+						<th>Présence au déjeuner ?</th>
+						<th>Présence au goûter ?</th>
+						<th>Absence non justifiée ?</th>
+						<th>Adhésion ?</th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for e in enfant %}
+						<tr id='enfant_{{e.id}}'>
+							<td>{{e.nom}}
+								{{e.prenom}}
+								<input type="hidden" name="enfants[]" value='{{e.id}}'></td>
+							<td>
+								<label><input id='matin_{{e.id}}' type="checkbox" name="petitDej[]" value="{{e.id}}" {{(repas is defined and e.id in repas["petitDej"])?"checked":""}}></label>
+							</td>
+							<td>
+								<label><input id='midi_{{e.id}}' type="checkbox" name="dejeuner[]" value="{{e.id}}" {{(repas is defined and e.id in repas["dejeuner"])?"checked":""}}></label>
+							</td>
+							<td>
+								<label><input id='soir_{{e.id}}' type="checkbox" name="gouter[]" value="{{e.id}}" {{(repas is defined and e.id in repas["gouter"])?"checked":""}}></label>
+							</td>
+							<td>
+								<label><input id='absence_{{e.id}}' type="checkbox" name="absence[]" value="{{e.id}}" {{(repas is defined and e.id in repas["absence"])?"checked":""}}></label>
+							</td>
+							<td>
+								<label><input id='adhesion_{{e.id}}' type="checkbox" name="adhesion[]" value="{{e.id}}" {{(repas is defined and e.id in repas["adhesion"])?"checked":""}}></label>
+							</td>
+						</tr>
+					{% endfor %}
+				</tbody>
+			</table>
 
-            <input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
-            <input type="hidden" name="FORM_SUBMIT" value="saisie_repas">
-            <div id="submit" class="bt1"><input type="submit" class="btn" value="Enregistrer"></div>
-        </form>
-    </div>
+			<input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
+			<input type="hidden" name="FORM_SUBMIT" value="saisie_repas">
+			<div id="submit" class="bt1"><input type="submit" class="btn" value="Enregistrer"></div>
+		</form>
+	</div>
 </div>

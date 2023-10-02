@@ -25,6 +25,8 @@ class beModuleSaisie extends \BackendModule
             'petitDej',
             'dejeuner',
             'gouter',
+            'absence',
+            'adhesion',
         );
         if (null != Input::post('FORM_SUBMIT') && Input::post('FORM_SUBMIT') == 'saisie_repas') {
             $enfants = Input::post('enfants');
@@ -47,7 +49,7 @@ class beModuleSaisie extends \BackendModule
                         }
                     }
                     $repas->save();
-                    if ($repas->petitDej == 'Non' && $repas->dejeuner == 'Non' && $repas->gouter == 'Non') {
+                    if ($repas->petitDej == 'Non' && $repas->dejeuner == 'Non' && $repas->gouter == 'Non' && $repas->absence == 'Non' && $repas->adhesion == 'Non') {
                         $repas->delete();
                     }
                 }
@@ -66,6 +68,8 @@ class beModuleSaisie extends \BackendModule
                 'petitDej' => array(),
                 'dejeuner' => array(),
                 'gouter'   => array(),
+                'absence'  => array(),
+                'adhesion' => array(),
             );
             foreach ($repas as $rep) {
                 foreach ($champs as $ch) {

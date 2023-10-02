@@ -101,6 +101,9 @@ array_insert($GLOBALS['BE_MOD']['apeloinConfig'], 98, array(
     'tarifs'         => array(
         'tables' => array('tl_tarif'),
     ),
+    'factures'       => array(
+        'tables' => array('tl_facture'),
+    ),
     /*
 'Facture'       => array(
 'tables' => array('tl_facture'),

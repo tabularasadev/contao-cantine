@@ -2,7 +2,6 @@
 
 namespace trdev\ContaoCantineBundle\Module;
 
-use Contao\FilesModel;
 use Contao\Folder;
 use Contao\Input;
 use Contao\RequestToken;
@@ -58,16 +57,18 @@ class beModuleGenFactures extends \BackendModule
         ]];
 
         foreach ($this->Template->factures as $f) {
-            $datas[] = [
-                $f->noFacture,
-                $f->total . ' €',
-                ($f->estPaye) ? 'Payée' : 'Impayée',
-                ($f->typePaiement != '') ? $GLOBALS['typePaiements'][$f->typePaiement] : '',
-                ($f->datePaiement != '') ? date('d/m/Y', $f->datePaiement) : '',
-                $f->printNomEnfant(),
-                $f->printEtablissement(),
-                $f->printClasse(),
-            ];
+            if ($f->noFacture != '') {
+                $datas[] = [
+                    $f->noFacture,
+                    $f->total . ' €',
+                    ($f->estPaye) ? 'Payée' : 'Impayée',
+                    ($f->typePaiement != '') ? $GLOBALS['typePaiements'][$f->typePaiement] : '',
+                    ($f->datePaiement != '') ? date('d/m/Y', $f->datePaiement) : '',
+                    $f->printNomEnfant(),
+                    $f->printEtablissement(),
+                    $f->printClasse(),
+                ];
+            }
         }
 
         if (Count($datas) > 2) {
@@ -83,8 +84,6 @@ class beModuleGenFactures extends \BackendModule
             }
 
             $fileName = $dossier . '/' . FcAddons::generateAlias($titre) . '.xlsx';
-            $model    = FilesModel::findByPath($fileName);
-            dump($model);
 
             SimpleXLSXGen::fromArray($datas)
                 ->setTitle($titre)

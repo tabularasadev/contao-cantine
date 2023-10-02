@@ -109,6 +109,8 @@ $GLOBALS['TL_DCA'][$t] = array(
         'petitDej'  => TypeChamp::select(array('Non', 'Oui')),
         'dejeuner'  => TypeChamp::select(array('Non', 'Oui')),
         'gouter'    => TypeChamp::select(array('Non', 'Oui')),
+        'absence'   => TypeChamp::select(array('Non', 'Oui')),
+        'adhesion'  => TypeChamp::select(array('Non', 'Oui')),
         'nomEnfant' => TypeChamp::selectTable('tl_enfant.CONCAT(prenom, " ", nom)', false, true),
     ),
 );

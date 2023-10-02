@@ -34,11 +34,15 @@ jQuery("document").ready(function ($) {
                         let row = "#enfant_" + element.enfant,
                             matin = "#matin_" + element.enfant,
                             midi = "#midi_" + element.enfant,
-                            soir = "#soir_" + element.enfant;
+                            soir = "#soir_" + element.enfant,
+                            abs = "#absence_" + element.enfant,
+                            adh = "#adhesion_" + element.enfant;
                         $(row).show("slow");
                         $(matin).prop("checked", element.matin == "1" ? true : false);
                         $(midi).prop("checked", element.midi == "1" ? true : false);
                         $(soir).prop("checked", element.soir == "1" ? true : false);
+                        $(abs).prop("checked", element.abs == "1" ? true : false);
+                        $(adh).prop("checked", element.adh == "1" ? true : false);
                     });
                 }
             },
