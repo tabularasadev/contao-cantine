@@ -3,6 +3,7 @@ jQuery("document").ready(function ($) {
     let majListeRepas = function () {
         console.clear();
         console.log("Maj de la liste des Repas");
+        $("#loading").show();
 
         let datas = {
             action: "getListeRepas",
@@ -44,10 +45,12 @@ jQuery("document").ready(function ($) {
                         $(abs).prop("checked", element.abs == "1" ? true : false);
                         $(adh).prop("checked", element.adh == "1" ? true : false);
                     });
+                    $("#loading").hide();
                 }
             },
             error: function (error) {
                 console.error(error);
+                $("#loading").hide();
             },
         });
     };

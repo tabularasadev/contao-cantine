@@ -9,10 +9,14 @@
 				{% endfor %}
 			</select>
 			<select class="nomEtablissement" name="nomEtablissement" id="nomEtablissement" required>
-				<option value="">Choix de l'établissement</option>
-				{% for eta in etablissement %}
-					<option value="{{eta.id}}">{{eta.nom}}</option>
-				{% endfor %}
+				{% if etablissements is defined %}
+					<option value="">Choix de l'établissement</option>
+					{% for eta in etablissement %}
+						<option value="{{eta.id}}">{{eta.nom}}</option>
+					{% endfor %}
+				{% else %}
+					<option value="{{etablissement.id}}" checked>{{etablissement.nom}}</option>
+				{% endif %}
 			</select>
 		</form>
 	</div>
@@ -63,5 +67,17 @@
 			<input type="hidden" name="FORM_SUBMIT" value="saisie_repas">
 			<div id="submit" class="bt1"><input type="submit" class="btn" value="Enregistrer"></div>
 		</form>
+	</div>
+</div>
+<div id="loading">
+	<div class="lds-roller">
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
+		<div></div>
 	</div>
 </div>

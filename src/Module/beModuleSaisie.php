@@ -17,6 +17,8 @@ class beModuleSaisie extends \BackendModule
 
     protected function compile()
     {
+        $this->import('BackendUser', 'User');
+
         /** @var \BackendTemplate|object $objTemplate */
         $objTemplate        = new \BackendTemplate('be_wildcard');
         $token              = new RequestToken();
@@ -56,9 +58,14 @@ class beModuleSaisie extends \BackendModule
             }
         }
 
-        $this->Template->enfant        = enfantModel::findByScolarise('Oui', array('order' => 'nom ASC, prenom ASC'));
-        $this->Template->classe        = classeModel::findAll();
-        $this->Template->etablissement = etablissementModel::findAll();
+        $this->Template->classe = classeModel::findAll();
+        if ($this->User->etablissement != '' && $this->User->etablissement != '0') {
+            $this->Template->enfant        = enfantModel::findBy(['scolarise=?', 'etablissement=?'], ['Oui', $this->User->etablissement], array('order' => 'nom ASC, prenom ASC'));
+            $this->Template->etablissement = etablissementModel::findByPk($this->User->etablissement);
+        } else {
+            $this->Template->enfant         = enfantModel::findByScolarise('Oui', array('order' => 'nom ASC, prenom ASC'));
+            $this->Template->etablissements = etablissementModel::findAll();
+        }
 
         $today = new DateTime();
         $today->setTime(0, 0, 0);
