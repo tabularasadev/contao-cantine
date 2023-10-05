@@ -11,7 +11,7 @@
 			<select class="nomEtablissement" name="nomEtablissement" id="nomEtablissement" required>
 				{% if etablissements is defined %}
 					<option value="">Choix de l'établissement</option>
-					{% for eta in etablissement %}
+					{% for eta in etablissements %}
 						<option value="{{eta.id}}">{{eta.nom}}</option>
 					{% endfor %}
 				{% else %}
