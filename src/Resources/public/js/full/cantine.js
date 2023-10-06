@@ -56,17 +56,25 @@ jQuery("document").ready(function ($) {
     };
 
     $("select#nomClasse, select#nomEtablissement, input#date").change(function () {
-        majListeRepas();
+        if ($("#MODIFNONSAVE").val() == "NOK") {
+            if (window.confirm("Vous avez des modifications non enregistrées, souhaitez-vous continuer ?")) {
+                $("#MODIFNONSAVE").val("OK");
+                majListeRepas();
+            }
+        } else {
+            majListeRepas();
+        }
     });
 
     //Afficher la date dans l'input date
+    /*
     if ($("input#date").length > 0) {
         let dateActuelle = new Date(),
             dateString = dateActuelle.toISOString().slice(0, 10),
             inputDate = document.getElementById("date");
 
         inputDate.value = dateString;
-    }
+    }*/
     //#endregion
 
     //#region Tableau de bord
@@ -78,6 +86,29 @@ jQuery("document").ready(function ($) {
             ],
         });
     }
+    //#endregion
+
+    //#region Cocher tout
+    $("input[value=all]").on("click", function () {
+        let checked = this.checked,
+            selecteur = this.id.split("_")[0];
+        $("#presences tbody tr").each(function () {
+            if (this.style.display != "none") {
+                let id = this.id.split("_")[1],
+                    input = selecteur + "_" + id;
+                document.getElementById(input).checked = checked;
+            }
+        });
+    });
+    //#endregion
+
+    //#region CheckBoxChange
+    $("input[type=checkbox]").on("change", function () {
+        let item = $("#MODIFNONSAVE")[0];
+        if (item.value != "NOK") {
+            item.value = "NOK";
+        }
+    });
     //#endregion
 
     //#region Envois de toutes les factures
@@ -217,6 +248,22 @@ jQuery("document").ready(function ($) {
         fin.endOf("month");
         this.value = debut.format("YYYY-MM-DD");
         $("input[name=dateFin]").val(fin.format("YYYY-MM-DD"));
+    });
+    //#endregion
+
+    //#region Envoi du formulaire
+    $("#saisieEnfants").on("submit", function (event) {
+        $("#loading").show();
+        if ($("input[name=SENDING]").val() == "NOK") {
+            event.preventDefault();
+            $("#presences tbody tr").each(function () {
+                if (this.style.display == "none") {
+                    this.remove();
+                }
+            });
+            $("input[name=SENDING]").val("OK");
+            $("#saisieEnfants").submit();
+        }
     });
     //#endregion
 });

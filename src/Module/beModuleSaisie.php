@@ -33,6 +33,11 @@ class beModuleSaisie extends \BackendModule
             'absence',
             'adhesion',
         );
+
+        $date = new DateTime();
+        $date->setTime(0, 0, 0);
+        $date = $date->format('U');
+
         if (null != Input::post('FORM_SUBMIT') && Input::post('FORM_SUBMIT') == 'saisie_repas') {
             $enfants = Input::post('enfants');
             $date    = strtotime(Input::post('date'));
@@ -101,9 +106,9 @@ class beModuleSaisie extends \BackendModule
             $this->Template->etablissements = etablissementModel::findAll();
         }
 
-        $today = new DateTime();
-        $today->setTime(0, 0, 0);
-        $repas = repasModel::findByDate($today->format('U'));
+        $this->Template->date = $date;
+
+        $repas = repasModel::findByDate($date);
         if ($repas) {
             $listeRepas = array(
                 'petitDej' => array(),

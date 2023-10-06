@@ -18,13 +18,14 @@
 					<option value="{{etablissement.id}}" checked>{{etablissement.nom}}</option>
 				{% endif %}
 			</select>
+			<input type="hidden" id="MODIFNONSAVE" name="modifs" value='OK'>
 		</form>
 	</div>
 	<div id="formListing">
-		<form action="" method="post">
+		<form action="" method="post" id="saisieEnfants">
 			<div>
 				<label for='date'>Veuillez saisir la date du jour :</label>
-				<input type="date" name="date" id="date" required>
+				<input type="date" name="date" id="date" value="{{date|date("Y-m-d")}}" required>
 			</div>
 			<table id="presences" class="tableauApe">
 				<thead>
@@ -35,6 +36,24 @@
 						<th>Présence au goûter ?</th>
 						<th>Absence non justifiée ?</th>
 						<th>Adhésion ?</th>
+					</tr>
+					<tr>
+						<td></td>
+						<td>
+							<label><input id='matin_all' type="checkbox" name="petitDej[]" value="all"></label>
+						</td>
+						<td>
+							<label><input id='midi_all' type="checkbox" name="dejeuner[]" value="all"></label>
+						</td>
+						<td>
+							<label><input id='soir_all' type="checkbox" name="gouter[]" value="all"></label>
+						</td>
+						<td>
+							<label><input id='absence_all' type="checkbox" name="absence[]" value="all"></label>
+						</td>
+						<td>
+							<label><input id='adhesion_all' type="checkbox" name="adhesion[]" value="all"></label>
+						</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -62,7 +81,7 @@
 					{% endfor %}
 				</tbody>
 			</table>
-
+			<input type="hidden" name="SENDING" value="NOK">
 			<input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
 			<input type="hidden" name="FORM_SUBMIT" value="saisie_repas">
 			<div id="submit" class="bt1"><input type="submit" class="btn" value="Enregistrer"></div>

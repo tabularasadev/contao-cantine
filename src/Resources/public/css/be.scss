@@ -83,6 +83,10 @@ $gris : #fafafc;
                     display: inline-block;
                     width: 100%;
                 }
+
+                &:hover {
+                    background-color: $grisFonce;
+                }
             }
         }
     }
