@@ -154,6 +154,7 @@ jQuery("document").ready(function ($) {
                                 item: envois[i].value,
                                 typeMail: choix.value,
                             };
+                            console.log(datas);
                             $.ajax({
                                 url: "/ajax.html",
                                 data: datas,

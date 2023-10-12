@@ -114,7 +114,7 @@ class factureModel extends \Model
     {
         if ($this->noFacture == '') {
             $format = array(
-                date('ym'),
+                date('ym', $this->dateDebut),
                 enfantModel::getInitialeByPk($this->enfant),
             );
             $alias    = implode('', $format);
@@ -325,15 +325,19 @@ class factureModel extends \Model
         $message = new Email();
 
         if ($type == 'nouveau') {
-            $message->subject = $GLOBALS['TL_CONFIG']['objetMailFacture'];
+            $message->subject = sprintf('%s - %s %s', $GLOBALS['TL_CONFIG']['objetMailFacture'], $enfant->nom, $enfant->prenom);
             $html             = $GLOBALS['TL_CONFIG']['messageMailFacture'];
         } else {
-            $message->subject = $GLOBALS['TL_CONFIG']['objetMailRelance'];
+            $message->subject = sprintf('%s - %s %s', $GLOBALS['TL_CONFIG']['objetMailRelance'], $enfant->nom, $enfant->prenom);
             $html             = $GLOBALS['TL_CONFIG']['messageMailRelance'];
         }
 
+        setlocale(LC_ALL, 'fr_FR');
+
         $datas = array(
-            'lien' => sprintf("<a href='%s' target='_blank' title='Cliquez-ici pour accéder à votre facture'>Accéder à ma facture</a>", $this->getLienPublique()),
+            'date'   => strftime('%B %Y', $this->dateDebut),
+            'enfant' => $enfant->nom . ' ' . $enfant->prenom,
+            'lien'   => sprintf("<a href='%s' target='_blank' title='Cliquez-ici pour accéder à votre facture'>Accéder à ma facture</a>", $this->getLienPublique()),
         );
 
         foreach ($datas as $key => $value) {
@@ -344,11 +348,11 @@ class factureModel extends \Model
         $message->html = $html;
         $res           = true;
         foreach ($emails as $e) {
-            if ($_ENV['APP_ENV'] != 'dev') {
-                if (!$message->sendTo($e)) {
-                    $res = false;
-                }
+            //if ($_ENV['APP_ENV'] != 'dev') {
+            if (!$message->sendTo($e)) {
+                $res = false;
             }
+            //}
         }
         return $res;
     }
