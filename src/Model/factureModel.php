@@ -188,7 +188,7 @@ class factureModel extends \Model
         return $this->nbRepasSoir;
     }
 
-    public static function nouvelleFacture($debut, $fin, $enfant)
+    public static function nouvelleFacture($debut, $fin, $enfant, $creation = true)
     {
         $classe = classeModel::findByPk($enfant->classe);
 
@@ -220,6 +220,10 @@ class factureModel extends \Model
             $facture->dateFin     = $fin->format('U');
             $facture->tarifs      = $tarif->id;
             $facture->enfant      = $enfant->id;
+        }
+
+        if ($creation == false) {
+            return $facture;
         }
 
         if ($facture->comptage()) {

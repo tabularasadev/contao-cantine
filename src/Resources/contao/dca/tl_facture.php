@@ -36,7 +36,7 @@ $GLOBALS['TL_DCA'][$t] = array(
             'flag'        => 12, //https://docs.contao.org/dev/reference/dca/fields/#reference
         ),
         'label'             => array(
-            'fields'         => array('dateEdition', 'enfant:tl_enfant.CONCAT(prenom, " ", nom)', 'noFacture', 'total', 'estPaye', 'typePaiement'),
+            'fields'         => array('dateEdition', 'enfant:tl_enfant.CONCAT(prenom, " ", nom)', 'noFacture', 'dateDebut', 'dateFin', 'total', 'estPaye', 'typePaiement'),
             'showColumns'    => true,
             'label_callback' => array('tl_facture', 'setLabels'),
         ),
@@ -130,8 +130,11 @@ class tl_facture extends Backend
     {
         $args[0] = date('d/m/Y', $args[0]);
 
-        $args[3] = $args[3] . ' €';
-        $args[4] = ($args[4] == 'non') ? 'Non' : 'Oui';
+        $args[3] = date('d/m/Y', $args[3]);
+        $args[4] = date('d/m/Y', $args[4]);
+
+        $args[5] = $args[5] . ' €';
+        $args[6] = ($args[6] == 'non') ? 'Non' : 'Oui';
         return $args;
     }
 

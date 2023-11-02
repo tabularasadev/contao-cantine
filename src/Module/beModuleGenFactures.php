@@ -24,11 +24,11 @@ class beModuleGenFactures extends \BackendModule
         if (null != Input::post('FORM_SUBMIT') && Input::post('FORM_SUBMIT') == 'genFacture') {
             $dateDebut = Input::post('dateDebut');
             $dateFin   = Input::post('dateFin');
-            $this->generation($dateDebut, $dateFin);
+            $this->generation($dateDebut, $dateFin, Input::post('choix'));
         } elseif (Input::get('exportFrom') != '' && Input::get('exportTo') != '') {
             $dateDebut = Input::get('exportFrom');
             $dateFin   = Input::get('exportTo');
-            $this->generation($dateDebut, $dateFin);
+            $this->generation($dateDebut, $dateFin, Input::get('choix'));
             $this->export($dateDebut, $dateFin);
         } else {
             $dateDebut = date('Y-m-01');
@@ -98,15 +98,33 @@ class beModuleGenFactures extends \BackendModule
         }
     }
 
-    private function generation($deb, $fin)
+    private function generation($deb, $fin, $choix)
     {
+        $debut = DateTime::createFromFormat('Y-m-d', $deb)->setTime(0, 0);
+        $fin   = DateTime::createFromFormat('Y-m-d', $fin)->setTime(23, 59);
+
+        if ($choix == 'suppr') {
+            $factures = factureModel::findBy([
+                'dateDebut = ?',
+                'dateFin = ?'],
+                [
+                    $debut->format('U'),
+                    $fin->format('U'),
+                ]);
+            if ($factures) {
+                foreach ($factures as $fac) {
+                    $fac->delete();
+                }
+            }
+
+            return null;
+        }
+
         $enfants  = enfantModel::findByScolarise('Oui');
         $factures = array();
         if ($enfants) {
-            $debut = DateTime::createFromFormat('Y-m-d', $deb)->setTime(0, 0);
-            $fin   = DateTime::createFromFormat('Y-m-d', $fin)->setTime(23, 59);
             foreach ($enfants as $enfant) {
-                $factures[] = factureModel::nouvelleFacture($debut, $fin, $enfant);
+                $factures[] = factureModel::nouvelleFacture($debut, $fin, $enfant, ($choix == 'liste') ? false : true);
             }
             $this->Template->factures = $factures;
         }

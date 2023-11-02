@@ -267,4 +267,23 @@ jQuery("document").ready(function ($) {
         }
     });
     //#endregion
+
+    //#region Vérif avant de supprimer les facture
+    $("form#genFacture").on("submit", function (event) {
+        if ($("input[name=submitable]").val() == "0") {
+            if ($("input[name=choix]:checked").val() == "suppr") {
+                event.preventDefault();
+                let deb = $("input[name=dateDebut]").val().split("-").reverse().join("/"),
+                    end = $("input[name=dateFin]").val().split("-").reverse().join("/");
+                let confirmation = confirm(`Attention, vous allez supprimer toutes les facture pour la période du ${deb} au ${end}, êtes-vous sûr de vouloir poursuivre ?`);
+                console.log(confirmation);
+                if (confirmation == false) {
+                    return false;
+                }
+            }
+            $("input[name=submitable]").val("1");
+            $("form#genFacture").submit();
+        }
+    });
+    //#endregion
 });

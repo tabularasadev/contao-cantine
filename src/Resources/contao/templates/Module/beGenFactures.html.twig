@@ -12,9 +12,25 @@
 					<input type="date" name="dateFin" required value='{{dateFin}}' readonly='true'>
 				</div>
 			</div>
+			<div class="options">
+				<label for="">Pour cette période, je souhaite :</label>
+				<div>
+					<input type="radio" id="choix_liste" name="choix" value='liste' checked required>
+					<label for="choix_liste">Lister les factures</label>
+				</div>
+				<div>
+					<input type="radio" id="choix_generation" name="choix" value='generation' required>
+					<label for="choix_generation">Générer les factures manquantes</label>
+				</div>
+				<div>
+					<input type="radio" id="choix_suppr" name="choix" value='suppr' required>
+					<label for="choix_suppr">Supprimer les factures</label>
+				</div>
+			</div>
 			<input type="hidden" name="REQUEST_TOKEN" value="{{rt|raw}}"/>
 			<input type="hidden" name="FORM_SUBMIT" value="genFacture">
-			<div id="submit" class="bt1"><input type="submit" class="btn" value="Générer / Récupérer les factures existantes"></div>
+			<input type="hidden" name="submitable" value="0">
+			<div id="submit" class="bt1"><input type="submit" class="btn" value="Confirmer"></div>
 		</form>
 
 		{% if factures is defined %}
