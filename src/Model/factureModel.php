@@ -104,7 +104,8 @@ class factureModel extends \Model
         $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off' || $_SERVER['SERVER_PORT'] == 443) ? "https://" : "http://";
         $domaine  = $_SERVER['HTTP_HOST'] . '/';
         $page     = 'factures/';
-        $cle      = hash_hmac('sha256', $this->noFacture, System::getContainer()->getParameter('kernel.secret'));
+        $id       = $this->enfant->id . '-' . $this->id;
+        $cle      = hash_hmac('sha256', $id, System::getContainer()->getParameter('kernel.secret'));
         //$cle      = md5($this->noFacture);
 
         return sprintf('%s%s%s%s.html', $protocol, $domaine, $page, $cle);
@@ -136,8 +137,9 @@ class factureModel extends \Model
 
         if ($factures && Count($factures) > 0) {
             foreach ($factures as $fac) {
-                $cle = hash_hmac('sha256', $fac->noFacture, System::getContainer()->getParameter('kernel.secret'));
-                if ($fac->noFacture && $cle == $item) {
+                $id  = $fac->enfant . '-' . $fac->id;
+                $cle = hash_hmac('sha256', $id, System::getContainer()->getParameter('kernel.secret'));
+                if ($cle == $item) {
                     $fac->comptage();
                     $fac->enfant = enfantModel::findByPk($fac->enfant);
                     $fac->tarifs = tarifModel::findByPk($fac->tarifs);
